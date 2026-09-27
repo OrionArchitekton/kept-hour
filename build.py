@@ -773,6 +773,8 @@ def robots_and_sitemap(urls: list[str]) -> None:
     key = "kept-hour-indexnow-" + "7f3c9a"
     write(f"{key}.txt", key)
     (ROOT / "INDEXNOW_KEY.txt").write_text(key + "\n")
+    # Search Console HTML-file method. Exact bytes Google asked for.
+    (ROOT / "googlec492d67015d750fe.html").write_text("google-site-verification: googlec492d67015d750fe.html\n")
 
 
 def distribution() -> None:

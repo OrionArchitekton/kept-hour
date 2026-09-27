@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kept hour by city — tax load and rent</title>
+<meta name="description" content="City pages with a planning tax load and typical one-bedroom rent next to your kept hour.">
+<link rel="canonical" href="https://orionarchitekton.github.io/kept-hour/cities/">
+<meta property="og:title" content="Kept hour by city — tax load and rent">
+<meta property="og:description" content="City pages with a planning tax load and typical one-bedroom rent next to your kept hour.">
+<meta property="og:image" content="https://orionarchitekton.github.io/kept-hour/assets/og.png">
+<meta property="og:url" content="https://orionarchitekton.github.io/kept-hour/cities/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://orionarchitekton.github.io/kept-hour/favicon.png">
+<style>
+:root {
+  --ink: #1a1814;
+  --muted: #5c564c;
+  --cream: #f7f3ea;
+  --paper: #fffdf8;
+  --line: #e4dccb;
+  --rust: #b04a2a;
+  --rust-deep: #8a3820;
+  --moss: #2f4a3f;
+  --gold: #c4954a;
+  --shadow: 0 18px 40px rgba(26, 24, 20, 0.08);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 500px at 90% -10%, rgba(196,149,74,.18), transparent 60%),
+    radial-gradient(900px 400px at -10% 20%, rgba(176,74,42,.08), transparent 55%),
+    var(--cream);
+  font: 18px/1.55 "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+}
+a { color: var(--rust-deep); }
+a:hover { color: var(--rust); }
+.wrap { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
+header.site {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 0 8px;
+}
+.brand { display: flex; gap: 10px; align-items: center; text-decoration: none; color: var(--ink); font-weight: 700; letter-spacing: .04em; }
+.brand img { width: 36px; height: 36px; border-radius: 50%; }
+.brand span { font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 14px; letter-spacing: .16em; text-transform: uppercase; }
+nav.site a { margin-left: 16px; text-decoration: none; font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 14px; letter-spacing: .04em; }
+.hero { padding: 28px 0 10px; }
+.kicker { font-family: "Avenir Next", "Segoe UI", sans-serif; letter-spacing: .18em; text-transform: uppercase; font-size: 12px; color: var(--rust); font-weight: 700; }
+h1 { font-size: clamp(40px, 6vw, 68px); line-height: .98; letter-spacing: -0.03em; margin: 10px 0 14px; font-weight: 600; }
+.lede { font-size: 22px; max-width: 42rem; color: var(--muted); }
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+.grid { display: grid; gap: 16px; }
+.grid-2 { grid-template-columns: 1.1fr .9fr; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+label { display: block; font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin: 10px 0 6px; }
+input, select {
+  width: 100%; font: 18px/1.3 Georgia, serif; padding: 12px 12px;
+  border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink);
+}
+button, .btn {
+  display: inline-block; background: var(--rust); color: #fffdf8; border: 0; border-radius: 999px;
+  padding: 12px 18px; font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 15px;
+  letter-spacing: .03em; text-decoration: none; cursor: pointer;
+}
+button:hover, .btn:hover { background: var(--rust-deep); color: white; }
+.btn.moss { background: var(--moss); }
+.stat { padding: 8px 0; }
+.stat b { display: block; font-size: 34px; letter-spacing: -0.03em; line-height: 1.05; }
+.stat span { color: var(--muted); font-size: 14px; font-family: "Avenir Next", "Segoe UI", sans-serif; }
+.note { font-size: 14px; color: var(--muted); }
+.share-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.pill {
+  border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 999px;
+  padding: 8px 12px; font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 13px;
+  text-decoration: none; cursor: pointer;
+}
+h2 { font-size: 32px; letter-spacing: -0.02em; margin: 36px 0 10px; }
+h3 { margin: 0 0 6px; font-size: 20px; }
+.list a { display: block; padding: 8px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.prose { max-width: 42rem; }
+.prose p { margin: 0 0 14px; }
+footer.site { margin: 48px 0 28px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+table { width: 100%; border-collapse: collapse; background: var(--paper); }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.banner {
+  margin-top: 18px; padding: 16px 18px; border-left: 4px solid var(--gold); background: #fff8ea;
+}
+.warn { background: #fff4ee; border-left-color: var(--rust); }
+@media (max-width: 800px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  nav.site { display: none; }
+  h1 { font-size: 40px; }
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+  <a class="brand" href="https://orionarchitekton.github.io/kept-hour/"><img src="https://orionarchitekton.github.io/kept-hour/favicon.png" alt=""> <span>Kept Hour</span></a>
+  <nav class="site">
+    <a href="https://orionarchitekton.github.io/kept-hour/">Calculator</a>
+    <a href="https://orionarchitekton.github.io/kept-hour/salary/">Salaries</a>
+    <a href="https://orionarchitekton.github.io/kept-hour/jobs/">Jobs</a>
+    <a href="https://orionarchitekton.github.io/kept-hour/cities/">Cities</a>
+    <a href="https://orionarchitekton.github.io/kept-hour/meetings/">Meetings</a>
+    <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Brief</a>
+  </nav>
+</header>
+
+<main class="hero"><p class="kicker">Cities</p><h1>The same salary is a different life once tax and rent sit beside it.</h1>
+<p class="lede">Tax is a combined planning load, not your return. Rent is a one-bedroom asking-rent range for orientation. Both exist so the hourly page is not floating in a vacuum.</p></main>
+<table><thead><tr><th>City</th><th>Country</th><th>Planning tax</th><th>1-bed rent range</th></tr></thead><tbody><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/new-york-ny/'>New York, NY</a></td><td>United States</td><td>30%</td><td>$4,200/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/los-angeles-ca/'>Los Angeles, CA</a></td><td>United States</td><td>28%</td><td>$2,800/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/chicago-il/'>Chicago, IL</a></td><td>United States</td><td>27%</td><td>$2,100/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/houston-tx/'>Houston, TX</a></td><td>United States</td><td>24%</td><td>$1,600/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/phoenix-az/'>Phoenix, AZ</a></td><td>United States</td><td>24%</td><td>$1,700/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/philadelphia-pa/'>Philadelphia, PA</a></td><td>United States</td><td>27%</td><td>$1,800/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/san-antonio-tx/'>San Antonio, TX</a></td><td>United States</td><td>24%</td><td>$1,400/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/san-diego-ca/'>San Diego, CA</a></td><td>United States</td><td>28%</td><td>$2,800/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/dallas-tx/'>Dallas, TX</a></td><td>United States</td><td>24%</td><td>$1,700/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/austin-tx/'>Austin, TX</a></td><td>United States</td><td>24%</td><td>$1,900/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/san-jose-ca/'>San Jose, CA</a></td><td>United States</td><td>29%</td><td>$3,200/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/jacksonville-fl/'>Jacksonville, FL</a></td><td>United States</td><td>23%</td><td>$1,500/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/fort-worth-tx/'>Fort Worth, TX</a></td><td>United States</td><td>24%</td><td>$1,500/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/columbus-oh/'>Columbus, OH</a></td><td>United States</td><td>26%</td><td>$1,400/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/charlotte-nc/'>Charlotte, NC</a></td><td>United States</td><td>25%</td><td>$1,600/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/indianapolis-in/'>Indianapolis, IN</a></td><td>United States</td><td>25%</td><td>$1,300/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/san-francisco-ca/'>San Francisco, CA</a></td><td>United States</td><td>32%</td><td>$3,600/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/seattle-wa/'>Seattle, WA</a></td><td>United States</td><td>26%</td><td>$2,400/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/denver-co/'>Denver, CO</a></td><td>United States</td><td>26%</td><td>$2,000/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/washington-dc/'>Washington, DC</a></td><td>United States</td><td>30%</td><td>$2,600/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/boston-ma/'>Boston, MA</a></td><td>United States</td><td>28%</td><td>$3,000/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/nashville-tn/'>Nashville, TN</a></td><td>United States</td><td>23%</td><td>$1,800/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/detroit-mi/'>Detroit, MI</a></td><td>United States</td><td>26%</td><td>$1,300/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/portland-or/'>Portland, OR</a></td><td>United States</td><td>28%</td><td>$1,900/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/las-vegas-nv/'>Las Vegas, NV</a></td><td>United States</td><td>23%</td><td>$1,600/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/memphis-tn/'>Memphis, TN</a></td><td>United States</td><td>24%</td><td>$1,200/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/louisville-ky/'>Louisville, KY</a></td><td>United States</td><td>26%</td><td>$1,200/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/baltimore-md/'>Baltimore, MD</a></td><td>United States</td><td>28%</td><td>$1,700/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/milwaukee-wi/'>Milwaukee, WI</a></td><td>United States</td><td>26%</td><td>$1,300/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/albuquerque-nm/'>Albuquerque, NM</a></td><td>United States</td><td>25%</td><td>$1,300/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/tucson-az/'>Tucson, AZ</a></td><td>United States</td><td>24%</td><td>$1,400/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/fresno-ca/'>Fresno, CA</a></td><td>United States</td><td>27%</td><td>$1,600/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/sacramento-ca/'>Sacramento, CA</a></td><td>United States</td><td>28%</td><td>$2,000/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/atlanta-ga/'>Atlanta, GA</a></td><td>United States</td><td>26%</td><td>$1,800/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/miami-fl/'>Miami, FL</a></td><td>United States</td><td>24%</td><td>$2,400/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/raleigh-nc/'>Raleigh, NC</a></td><td>United States</td><td>25%</td><td>$1,600/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/omaha-ne/'>Omaha, NE</a></td><td>United States</td><td>26%</td><td>$1,300/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/minneapolis-mn/'>Minneapolis, MN</a></td><td>United States</td><td>27%</td><td>$1,600/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/cleveland-oh/'>Cleveland, OH</a></td><td>United States</td><td>26%</td><td>$1,200/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/tampa-fl/'>Tampa, FL</a></td><td>United States</td><td>23%</td><td>$1,800/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/remote-us/'>Remote, United States</a></td><td>United States</td><td>26%</td><td>$1,800/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/london-uk/'>London, UK</a></td><td>United Kingdom</td><td>32%</td><td>$2,200/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/toronto-ca/'>Toronto, Canada</a></td><td>Canada</td><td>30%</td><td>$2,200/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/vancouver-ca/'>Vancouver, Canada</a></td><td>Canada</td><td>30%</td><td>$2,400/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/sydney-au/'>Sydney, Australia</a></td><td>Australia</td><td>32%</td><td>$2,400/mo</td></tr><tr><td><a href='https://orionarchitekton.github.io/kept-hour/cities/melbourne-au/'>Melbourne, Australia</a></td><td>Australia</td><td>32%</td><td>$2,000/mo</td></tr></tbody></table>
+<p class="note">Currency is shown in USD for comparison. London, Toronto, Vancouver, Sydney, and Melbourne figures are order-of-magnitude USD equivalents, not FX quotes.</p>
+
+<footer class="site">
+  <p>Kept Hour is a planning tool, not tax, legal, or financial advice. Tax loads and rents are labeled defaults so you can see the shape of a year, then replace them with your own numbers. Figures update in the browser. No account. No tracking pixels.</p>
+  <p>Built 2026-09-26. <a href="https://orionarchitekton.github.io/kept-hour/about/">About</a> · <a href="https://orionarchitekton.github.io/kept-hour/privacy/">Privacy</a> · <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Monday brief</a> · <a href="https://orionarchitekton.github.io/kept-hour/sitemap.xml">Sitemap</a></p>
+</footer>
+</div>
+<script>
+function money(n, d) {
+  d = d == null ? 0 : d;
+  return n.toLocaleString("en-US", {style:"currency", currency:"USD", maximumFractionDigits:d, minimumFractionDigits:d});
+}
+function readNum(id, fallback) {
+  const el = document.getElementById(id);
+  if (!el) return fallback;
+  const v = parseFloat(String(el.value).replace(/[^0-9.]/g, ""));
+  return isFinite(v) ? v : fallback;
+}
+function compute() {
+  const salary = readNum("salary", 85000);
+  const hours = Math.max(1, readNum("hours", 45));
+  const weeks = Math.max(1, readNum("weeks", 50));
+  const tax = Math.min(0.6, Math.max(0, readNum("tax", 25) / 100));
+  const commute = Math.max(0, readNum("commute", 0));
+  const days = Math.max(0, readNum("days", 5));
+  const meetingHrs = Math.max(0, readNum("meetings", 0));
+  const grossH = salary / (hours * weeks);
+  const netH = grossH * (1 - tax);
+  const commuteYearHrs = (commute / 60) * days * weeks;
+  const commuteCost = commuteYearHrs * netH;
+  const meetingYear = meetingHrs * weeks;
+  const meetingCost = meetingYear * netH;
+  const trueHours = hours + (commute / 60) * (days / 5) * (days ? 5 : 0);
+  // commute is daily round trip, so add daily commute hours onto the weekly hour count
+  const weeklyCommute = (commute / 60) * days;
+  const trueWeekly = hours + weeklyCommute;
+  const trueNet = (salary * (1 - tax)) / (trueWeekly * weeks);
+  const evening = Math.max(0, hours - 40) * weeks;
+  const set = (id, text) => { const n = document.getElementById(id); if (n) n.textContent = text; };
+  set("out-gross", money(grossH, 2));
+  set("out-net", money(netH, 2));
+  set("out-true", money(trueNet, 2));
+  set("out-evening", evening.toFixed(0) + " hours");
+  set("out-commute", money(commuteCost, 0) + " / " + commuteYearHrs.toFixed(0) + " h");
+  set("out-meetings", money(meetingCost, 0));
+  set("out-annual-net", money(salary * (1 - tax), 0));
+  const share = document.getElementById("share-text");
+  if (share) {
+    share.value = "My kept hour is " + money(netH, 2) + " after tax. Evenings already sold this year: " + evening.toFixed(0) + " hours. " + location.href;
+  }
+  const params = new URLSearchParams({s: salary, h: hours, w: weeks, t: Math.round(tax*100), c: commute, d: days, m: meetingHrs});
+  const url = location.pathname + "?" + params.toString();
+  const link = document.getElementById("perm");
+  if (link) link.textContent = url;
+  history.replaceState(null, "", url);
+}
+function bootFromQuery() {
+  const q = new URLSearchParams(location.search);
+  const map = {s:"salary", h:"hours", w:"weeks", t:"tax", c:"commute", d:"days", m:"meetings"};
+  Object.keys(map).forEach(k => { if (q.has(k)) { const el = document.getElementById(map[k]); if (el) el.value = q.get(k); } });
+}
+function copyShare() {
+  const t = document.getElementById("share-text");
+  if (!t) return;
+  navigator.clipboard.writeText(t.value).then(() => {
+    const b = document.getElementById("copy-btn");
+    if (b) { const old = b.textContent; b.textContent = "Copied"; setTimeout(() => b.textContent = old, 1200); }
+  });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  bootFromQuery();
+  document.querySelectorAll("input,select").forEach(el => el.addEventListener("input", compute));
+  compute();
+  const b = document.getElementById("copy-btn");
+  if (b) b.addEventListener("click", copyShare);
+});
+</script>
+</body>
+</html>

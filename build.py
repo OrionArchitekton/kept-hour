@@ -695,10 +695,18 @@ def newsletter() -> None:
   <p class="lede">No course. No daily drip. One email a week: a worked example (a salary, a city, a meeting load) and one sentence on what to do with it. The list is free. The annual brief, when the list is real, is the paid lane — written for people who already know their number and want the year planned against it.</p>
 </main>
 <div class="card">
-  <h2>Join by email. A form that drops mail is not a list.</h2>
-  <p>Send a blank message, or the word “Monday”, to <a href="mailto:kepthour.brief@gmail.com?subject=Monday%20brief">kepthour.brief@gmail.com</a>. That is the whole subscribe step until a real form endpoint exists. If the mailbox is not open yet, the message bounces — that is a visible failure, which is better than a fake success.</p>
-  <p><a class="btn" href="mailto:kepthour.brief@gmail.com?subject=Monday%20brief">Email Monday</a></p>
-  <p class="note">No tracker on this page. Do not put a confidential salary in the email. The calculator already lives in your browser.</p>
+  <form action="https://formsubmit.co/kepthour.brief@gmail.com" method="POST">
+    <label for="email">Email</label>
+    <input id="email" type="email" name="email" required placeholder="you@domain.com" autocomplete="email">
+    <input type="hidden" name="_subject" value="Kept Hour Monday brief">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="{SITE}/newsletter/thanks/">
+    <input type="text" name="_honey" style="display:none">
+    <p><button type="submit">Send me Monday</button></p>
+    <p class="note">The form delivers to kepthour.brief@gmail.com through FormSubmit. The first submission from this site triggers a confirmation email in that inbox. Until that confirmation is clicked, new subscribers will not arrive. No tracker is loaded on this page. Do not put a confidential salary in the form. The calculator already has it.</p>
+  </form>
+  <p class="note">Prefer mail? <a href="mailto:kepthour.brief@gmail.com?subject=Monday%20brief">kepthour.brief@gmail.com</a></p>
 </div>
 <section class="prose">
   <h2>What you are buying later, not now</h2>
@@ -732,11 +740,23 @@ def privacy() -> None:
 <main class="hero"><p class="kicker">Privacy</p><h1>The calculator does not know you.</h1></main>
 <section class="prose">
   <p>Numbers you type stay in the page. The share link puts those numbers in the URL so you can send them. If you send the link, you are publishing the numbers in it. Do not put a secret compensation figure in a URL you post to a company Slack if that figure is confidential.</p>
-  <p>There is no analytics pixel, no advertising cookie, and no account. GitHub Pages may log ordinary server requests the way any host does. The newsletter form, when claimed, sends your email to the form endpoint and nowhere else on this site.</p>
+  <p>There is no analytics pixel and no advertising cookie. GitHub Pages may log ordinary server requests the way any host does. The Monday form sends your email to FormSubmit, which forwards it to kepthour.brief@gmail.com. That is the only personal data the form collects. We do not sell it.</p>
   <p>We do not sell personal information. We do not have any, unless you email us.</p>
 </section>
 """
-    write("privacy/index.html", head("Privacy — Kept Hour", "Kept Hour stores nothing you type. The share link is the only export, and you choose to send it.", "/privacy/") + body + FOOT)
+    write("privacy/index.html", head("Privacy — Kept Hour", "Kept Hour stores nothing you type. The Monday form sends an email address to FormSubmit and nowhere else.", "/privacy/") + body + FOOT)
+
+
+def thanks() -> None:
+    body = f"""
+<main class="hero">
+  <p class="kicker">Monday brief</p>
+  <h1>You’re on the list if the inbox confirmed it.</h1>
+  <p class="lede">If this was the first submission ever, it activated the form instead of subscribing you. Check kepthour.brief@gmail.com, confirm FormSubmit once, then submit again. After that, one email a week. No drip.</p>
+  <p><a class="btn" href="{SITE}/">Back to the calculator</a></p>
+</main>
+"""
+    write("newsletter/thanks/index.html", head("You’re in — Kept Hour", "Monday brief signup received.", "/newsletter/thanks/") + body + FOOT)
 
 
 def robots_and_sitemap(urls: list[str]) -> None:
@@ -808,7 +828,7 @@ Form endpoint is a placeholder until Formspree (or Buttondown) is connected.
 
 
 def main() -> None:
-    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/newsletter/", "/about/", "/privacy/"]
+    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
     home()
     salary_index()
     for s in SALARIES:
@@ -831,6 +851,7 @@ def main() -> None:
         meeting_page(m)
         urls.append(f"/meetings/{m}-hours/")
     newsletter()
+    thanks()
     about()
     privacy()
     robots_and_sitemap(urls)

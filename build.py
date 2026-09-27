@@ -332,6 +332,7 @@ def head(title: str, desc: str, path: str, extra: str = "") -> str:
     <a href="{SITE}/jobs/">Jobs</a>
     <a href="{SITE}/cities/">Cities</a>
     <a href="{SITE}/meetings/">Meetings</a>
+    <a href="{SITE}/compare/">Offers</a>
     <a href="{SITE}/newsletter/">Brief</a>
   </nav>
 </header>
@@ -412,6 +413,7 @@ def home() -> None:
     <a class="card" href="{SITE}/salary/"><h3>By salary</h3><p>120 pages. $35k to $250k, at 35 to 60 hours.</p></a>
     <a class="card" href="{SITE}/jobs/"><h3>By job</h3><p>50 roles with a typical salary and a typical real week.</p></a>
     <a class="card" href="{SITE}/cities/"><h3>By city</h3><p>Tax load and rent, so the hourly rate has a cost of living next to it.</p></a>
+    <a class="card" href="{SITE}/compare/"><h3>Two offers</h3><p>The higher salary often loses on the hour. Compare them before you reply.</p></a>
   </div>
 </section>
 <section class="prose">
@@ -658,6 +660,33 @@ def meeting_page(m: int) -> None:
     )
 
 
+def compare() -> None:
+    pairs = [(70000, 40, 90000, 55), (80000, 40, 100000, 50), (120000, 45, 150000, 60)]
+    cards = []
+    for a, ah, b, bh in pairs:
+        an = (a / (ah * 50)) * 0.75
+        bn = (b / (bh * 50)) * 0.75
+        winner = "the lower salary" if an >= bn else "the higher salary"
+        cards.append(
+            f"<div class='card'><h3>{money(a)} at {ah}h vs {money(b)} at {bh}h</h3>"
+            f"<p>Kept hours: {rate(an)} vs {rate(bn)}. On the hour, {winner} wins, before commute. "
+            f"<a href='{SITE}/salary/{a}/{ah}/'>First offer</a> · <a href='{SITE}/salary/{b}/{bh}/'>Second offer</a></p></div>"
+        )
+    body = f"""
+<main class="hero">
+  <p class="kicker">Offers</p>
+  <h1>The higher salary is not the higher hour.</h1>
+  <p class="lede">People lose negotiations by comparing costumes. Compare kept hours. Tax load held at 25%, 50 weeks, no commute. Add the commute on each page before you decide.</p>
+</main>
+<div class="grid grid-3">{''.join(cards)}</div>
+{calc_block(salary=90000, hours=50)}
+<section class="prose">
+  <p>Put offer A in the calculator. Copy the kept hour. Put offer B in. The larger kept hour is the better trade of life for money, unless one offer buys a skill that raises next year’s hour. That exception is real. It is also the excuse people use to ignore a bad week. Name the skill or do not take the cut.</p>
+</section>
+"""
+    write("compare/index.html", head("Which offer pays more per hour — Kept Hour", "Compare two salaries by kept hour, not by the number on the offer letter.", "/compare/") + body + FOOT)
+
+
 def newsletter() -> None:
     body = f"""
 <main class="hero">
@@ -666,14 +695,10 @@ def newsletter() -> None:
   <p class="lede">No course. No daily drip. One email a week: a worked example (a salary, a city, a meeting load) and one sentence on what to do with it. The list is free. The annual brief, when the list is real, is the paid lane — written for people who already know their number and want the year planned against it.</p>
 </main>
 <div class="card">
-  <form action="https://formspree.io/f/xovqzqzq" method="POST">
-    <label for="email">Email</label>
-    <input id="email" name="email" type="email" required placeholder="you@domain.com" autocomplete="email">
-    <input type="hidden" name="_subject" value="Kept Hour Monday brief">
-    <input type="text" name="_gotcha" style="display:none">
-    <p><button type="submit">Send me Monday</button></p>
-    <p class="note">Form posts to Formspree. Until that endpoint is claimed, submissions will not land. The address to use instead, today, is on the about page. No third-party tracker is loaded.</p>
-  </form>
+  <h2>Join by email. A form that drops mail is not a list.</h2>
+  <p>Send a blank message, or the word “Monday”, to <a href="mailto:kepthour.brief@gmail.com?subject=Monday%20brief">kepthour.brief@gmail.com</a>. That is the whole subscribe step until a real form endpoint exists. If the mailbox is not open yet, the message bounces — that is a visible failure, which is better than a fake success.</p>
+  <p><a class="btn" href="mailto:kepthour.brief@gmail.com?subject=Monday%20brief">Email Monday</a></p>
+  <p class="note">No tracker on this page. Do not put a confidential salary in the email. The calculator already lives in your browser.</p>
 </div>
 <section class="prose">
   <h2>What you are buying later, not now</h2>
@@ -783,7 +808,7 @@ Form endpoint is a placeholder until Formspree (or Buttondown) is connected.
 
 
 def main() -> None:
-    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/newsletter/", "/about/", "/privacy/"]
+    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/newsletter/", "/about/", "/privacy/"]
     home()
     salary_index()
     for s in SALARIES:
@@ -800,6 +825,7 @@ def main() -> None:
     for row in CITIES:
         city_page(*row)
         urls.append(f"/cities/{row[0]}/")
+    compare()
     meetings_index()
     for m in MEETINGS:
         meeting_page(m)

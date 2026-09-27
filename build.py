@@ -334,6 +334,7 @@ def head(title: str, desc: str, path: str, extra: str = "") -> str:
     <a href="{SITE}/meetings/">Meetings</a>
     <a href="{SITE}/compare/">Offers</a>
     <a href="{SITE}/five-hours/">Five hours</a>
+    <a href="{SITE}/commute/">Commute</a>
     <a href="{SITE}/newsletter/">Brief</a>
   </nav>
 </header>
@@ -701,6 +702,48 @@ def raise_page() -> None:
     )
 
 
+def commute_page() -> None:
+    """40 minutes a day, priced. The other number people pretend is free."""
+    mins = 40
+    days = 5
+    weeks = 50
+    year_hours = (mins / 60) * days * weeks
+    # at the $30 kept hour from the $90k / 45h example
+    kept = 30
+    body = f"""
+<main class="hero">
+  <p class="kicker">Unpaid, not free</p>
+  <h1>A 40-minute commute is {year_hours:.0f} hours a year.</h1>
+  <p class="lede">Five days, fifty weeks. That is {year_hours/40:.2f} forty-hour weeks in a seat. At a $30 kept hour it is {money(year_hours * kept)} of life, and it never appears on the offer. Remote is not a personality. It is this number going to zero.</p>
+</main>
+<table>
+  <thead><tr><th>Round trip</th><th>Hours / year</th><th>At $30 kept</th><th>At $50 kept</th></tr></thead>
+  <tbody>
+    <tr><td>20 minutes</td><td>83</td><td>$2,500</td><td>$4,167</td></tr>
+    <tr><td>40 minutes</td><td>167</td><td>$5,000</td><td>$8,333</td></tr>
+    <tr><td>60 minutes</td><td>250</td><td>$7,500</td><td>$12,500</td></tr>
+    <tr><td>90 minutes</td><td>375</td><td>$11,250</td><td>$18,750</td></tr>
+  </tbody>
+</table>
+{calc_block(salary=90000, hours=45, commute=40, meetings=0)}
+<section class="prose">
+  <h2>The check</h2>
+  <p>20 minutes × 5 × 50 / 60 = 83.3 hours. 40 minutes is double, 166.7, which this page rounds to 167. 60 minutes is 250. 90 is 375. Dollars are those hours times the kept hour. If your hour is not $30, the calculator on this page already replaced it.</p>
+  <p>A raise that does not clear the commute can still be a cut. Price it before you celebrate the title. <a href="{SITE}/five-hours/">Five extra hours</a> is the other quiet cut. <a href="{SITE}/compare/">Two offers</a> is the reply.</p>
+</section>
+"""
+    write(
+        "commute/index.html",
+        head(
+            "A 40-minute commute is 167 hours a year — Kept Hour",
+            "Forty minutes round trip, five days, fifty weeks, is 167 hours. At a $30 kept hour that is $5,000.",
+            "/commute/",
+        )
+        + body
+        + FOOT,
+    )
+
+
 def compare() -> None:
     pairs = [(70000, 40, 90000, 55), (80000, 40, 100000, 50), (120000, 45, 150000, 60)]
     cards = []
@@ -871,7 +914,7 @@ Form endpoint is a placeholder until Formspree (or Buttondown) is connected.
 
 
 def main() -> None:
-    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/five-hours/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
+    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/five-hours/", "/commute/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
     home()
     salary_index()
     for s in SALARIES:
@@ -890,6 +933,7 @@ def main() -> None:
         urls.append(f"/cities/{row[0]}/")
     compare()
     raise_page()
+    commute_page()
     meetings_index()
     for m in MEETINGS:
         meeting_page(m)

@@ -333,6 +333,7 @@ def head(title: str, desc: str, path: str, extra: str = "") -> str:
     <a href="{SITE}/cities/">Cities</a>
     <a href="{SITE}/meetings/">Meetings</a>
     <a href="{SITE}/compare/">Offers</a>
+    <a href="{SITE}/five-hours/">Five hours</a>
     <a href="{SITE}/newsletter/">Brief</a>
   </nav>
 </header>
@@ -660,6 +661,46 @@ def meeting_page(m: int) -> None:
     )
 
 
+def raise_page() -> None:
+    """One URL people paste when someone says it is only a few hours."""
+    rows = []
+    for extra in (5, 10, 15, 20):
+        weeks = (extra * 50) / 40
+        rows.append(
+            f"<tr><td>{extra} more hours / week</td><td>{extra * 50}</td>"
+            f"<td>{weeks:.2f}</td>"
+            f"<td><a href='{SITE}/salary/90000/{40+extra}/'>$90,000 at {40+extra}h</a></td></tr>"
+        )
+    body = f"""
+<main class="hero">
+  <p class="kicker">The quiet cut</p>
+  <h1>Five extra hours a week is 250 hours a year.</h1>
+  <p class="lede">That is 6.25 forty-hour weeks you already agreed to, usually without a line on the offer. At $90,000, 50 weeks, and a 25% planning tax load, those five hours drop the kept hour from $33.75 to $30.00. The salary did not change. The life did.</p>
+</main>
+<table>
+  <thead><tr><th>Added to a 40-hour week</th><th>Hours / year</th><th>40-hour weeks</th><th>Same salary, worse hour</th></tr></thead>
+  <tbody>{''.join(rows)}</tbody>
+</table>
+{calc_block(salary=90000, hours=45, meetings=0, commute=0)}
+<section class="prose">
+  <h2>How to use this in a reply</h2>
+  <p>Do not argue about ambition. Ask which hours. “Five hours” is a mood. “250 hours, 6.25 weeks” is a number. If the extra block has a name — on-call, charting, a Friday demo — price that name. If it does not, it is not a raise. It is an unbudgeted vendor you already approved.</p>
+  <p>Compare two offers, not two moods: <a href="{SITE}/compare/">the higher salary often loses</a>. $70,000 at 40 hours keeps $26.25. $90,000 at 55 hours keeps $24.55. Same tax, same weeks, no commute.</p>
+  <p><a href="{SITE}/">Run your own week</a> · <a href="{SITE}/newsletter/">Monday brief</a></p>
+</section>
+"""
+    write(
+        "five-hours/index.html",
+        head(
+            "Five extra hours a week is 250 hours a year — Kept Hour",
+            "Five hours added to a 40-hour week is 250 hours a year, 6.25 work-weeks. The salary stays. The kept hour falls.",
+            "/five-hours/",
+        )
+        + body
+        + FOOT,
+    )
+
+
 def compare() -> None:
     pairs = [(70000, 40, 90000, 55), (80000, 40, 100000, 50), (120000, 45, 150000, 60)]
     cards = []
@@ -830,7 +871,7 @@ Form endpoint is a placeholder until Formspree (or Buttondown) is connected.
 
 
 def main() -> None:
-    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
+    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/five-hours/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
     home()
     salary_index()
     for s in SALARIES:
@@ -848,6 +889,7 @@ def main() -> None:
         city_page(*row)
         urls.append(f"/cities/{row[0]}/")
     compare()
+    raise_page()
     meetings_index()
     for m in MEETINGS:
         meeting_page(m)

@@ -336,6 +336,7 @@ def head(title: str, desc: str, path: str, extra: str = "") -> str:
     <a href="{SITE}/five-hours/">Five hours</a>
     <a href="{SITE}/commute/">Commute</a>
     <a href="{SITE}/newsletter/">Brief</a>
+    <a href="{SITE}/sheet/">Sheet</a>
   </nav>
 </header>
 """
@@ -771,6 +772,50 @@ def compare() -> None:
     write("compare/index.html", head("Which offer pays more per hour — Kept Hour", "Compare two salaries by kept hour, not by the number on the offer letter.", "/compare/") + body + FOOT)
 
 
+def sheet() -> None:
+    body = f"""
+<main class="hero">
+  <p class="kicker">The paid page</p>
+  <h1>One page. Your numbers. $39.</h1>
+  <p class="lede">The calculator is free and stays free. The sheet is the hour, the commute, the meetings, and the evenings, written as one page you can hand a future self. No subscription. No upsell. You email the numbers. You get the page. You pay when it is in your inbox, not before.</p>
+</main>
+<div class="grid grid-2">
+  <div class="card">
+    <h2>What you send</h2>
+    <form action="https://formsubmit.co/kepthour.brief@gmail.com" method="POST">
+      <label for="buyer">Your email</label>
+      <input id="buyer" type="email" name="email" required placeholder="you@domain.com" autocomplete="email">
+      <label for="offer">Salary, hours, weeks, tax, commute, meetings</label>
+      <input id="offer" name="numbers" required placeholder="90000, 47 hours, 50 weeks, 27% tax, 35 min, 6 meeting hours">
+      <input type="hidden" name="_subject" value="Kept Hour sheet request — $39">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="{SITE}/sheet/thanks/">
+      <input type="text" name="_honey" style="display:none">
+      <p><button type="submit">Request the sheet</button></p>
+      <p class="note">This form does not charge you. It asks for the page. Payment is a separate email with a receipt, after the page is delivered. If that payment path is not open yet, you will get the page and a plain note that says so. No surprise charge.</p>
+    </form>
+  </div>
+  <div class="card">
+    <h2>What you get</h2>
+    <p>A single page: kept hour, true hour after commute, evenings already sold, commute priced, meetings priced, and one sentence on which block to cut or sell. Planning arithmetic, not tax advice. Delivered to the email you typed.</p>
+    <p>Price: $39 once. Refund: reply to the delivery email within 7 days and you get it back, no form.</p>
+    <p class="note">Worked example, free: <a href="{SITE}/compare/">$70k at 40 hours beats $90k at 55</a>. The sheet is that, with your week instead of the example.</p>
+  </div>
+</div>
+"""
+    write("sheet/index.html", head("The Kept Hour sheet — $39, one page", "One page with your kept hour, commute, meetings, and the block to cut. $39 once. The calculator stays free.", "/sheet/") + body + FOOT)
+    thanks_body = f"""
+<main class="hero">
+  <p class="kicker">Sheet</p>
+  <h1>Request received. You have not been charged.</h1>
+  <p class="lede">The page comes by email. Payment is a second step, with a receipt, after delivery. If the payment path is not open, the note will say that in plain words.</p>
+  <p><a class="btn" href="{SITE}/">Back to the calculator</a></p>
+</main>
+"""
+    write("sheet/thanks/index.html", head("Sheet requested — Kept Hour", "Your Kept Hour sheet request was received. You have not been charged.", "/sheet/thanks/") + thanks_body + FOOT)
+
+
 def newsletter() -> None:
     body = f"""
 <main class="hero">
@@ -794,7 +839,7 @@ def newsletter() -> None:
 </div>
 <section class="prose">
   <h2>What you are buying later, not now</h2>
-  <p>The paid product is an annual Kept Hour brief: your salary, your real week, your city, your meeting load, and a one-page plan for which hours to cut or sell. Price target is $39 once, not a subscription that punishes you for a number you already have. It does not ship until the free list has readers. Traffic first. Cash second. That order is the whole strategy.</p>
+  <p>The paid product is the <a href="{SITE}/sheet/">Kept Hour sheet</a>: your salary, your real week, your commute, your meeting load, and one sentence on which hours to cut or sell. Price is $39 once, after the page is delivered, not a subscription. The calculator on this site stays free. This page has no affiliate links.</p>
   <p>Affiliate notes, if any are added later, will be labeled on the page that carries them. This page has none.</p>
 </section>
 """
@@ -914,7 +959,7 @@ Form endpoint is a placeholder until Formspree (or Buttondown) is connected.
 
 
 def main() -> None:
-    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/five-hours/", "/commute/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
+    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/five-hours/", "/commute/", "/sheet/", "/sheet/thanks/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
     home()
     salary_index()
     for s in SALARIES:
@@ -934,6 +979,7 @@ def main() -> None:
     compare()
     raise_page()
     commute_page()
+    sheet()
     meetings_index()
     for m in MEETINGS:
         meeting_page(m)

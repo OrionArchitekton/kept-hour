@@ -321,6 +321,7 @@ def head(title: str, desc: str, path: str, extra: str = "") -> str:
 <link rel="icon" href="{SITE}/favicon.png">
 <style>{CSS}</style>
 {extra}
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "f1ee4bdd16e746e99bb7123a719c77c3"}}'></script>
 </head>
 <body>
 <div class="wrap">
@@ -777,7 +778,7 @@ def sheet() -> None:
 <main class="hero">
   <p class="kicker">The paid page</p>
   <h1>One page. Your numbers. $39.</h1>
-  <p class="lede">The calculator is free and stays free. The sheet is the hour, the commute, the meetings, and the evenings, written as one page you can hand a future self. No subscription. No upsell. You email the numbers. You get the page. You pay when it is in your inbox, not before.</p>
+  <p class="lede">The calculator is free and stays free. The sheet is the hour, the commute, the meetings, and the evenings, written as one page you can hand a future self. No subscription. No upsell. Pay $39. The receipt is Stripe’s. The page comes by email after you send the numbers.</p>
 </main>
 <div class="grid grid-2">
   <div class="card">
@@ -792,14 +793,15 @@ def sheet() -> None:
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="{SITE}/sheet/thanks/">
       <input type="text" name="_honey" style="display:none">
-      <p><button type="submit">Request the sheet</button></p>
-      <p class="note">This form does not charge you. It asks for the page. Payment is a separate email with a receipt, after the page is delivered. If that payment path is not open yet, you will get the page and a plain note that says so. No surprise charge.</p>
+      <p><button type="submit">Send the numbers</button></p>
     </form>
+    <p><a class="btn" href="https://buy.stripe.com/bJe7sMgq9d9h5qpfWW8Zq01">Pay $39</a></p>
+    <p class="note">Payment is Stripe, one time, on an account the site owner controls. After you pay, Stripe shows its own confirmation page. It does not email you the sheet. Send the numbers in the form, from the same email Stripe has, and the page comes back to that inbox. If you pay and do not send the numbers, email kepthour.brief@gmail.com with the Stripe receipt and the numbers. Refund: reply within 7 days.</p>
   </div>
   <div class="card">
     <h2>What you get</h2>
     <p>A single page: kept hour, true hour after commute, evenings already sold, commute priced, meetings priced, and one sentence on which block to cut or sell. Planning arithmetic, not tax advice. Delivered to the email you typed.</p>
-    <p>Price: $39 once. Refund: reply to the delivery email within 7 days and you get it back, no form.</p>
+    <p>Price: $39 once, paid on Stripe before the page is written. The form itself does not charge your card. Stripe does, when you use the button. Refund: reply to the delivery email within 7 days.</p>
     <p class="note">Worked example, free: <a href="{SITE}/compare/">$70k at 40 hours beats $90k at 55</a>. The sheet is that, with your week instead of the example.</p>
   </div>
 </div>
@@ -808,12 +810,12 @@ def sheet() -> None:
     thanks_body = f"""
 <main class="hero">
   <p class="kicker">Sheet</p>
-  <h1>Request received. You have not been charged.</h1>
-  <p class="lede">The page comes by email. Payment is a second step, with a receipt, after delivery. If the payment path is not open, the note will say that in plain words.</p>
+  <h1>Paid. Now send the numbers if you have not.</h1>
+  <p class="lede">Stripe’s confirmation is the receipt. It is not the sheet. If you already submitted the form, nothing else is required. If you paid first, submit the form on the sheet page from the same email, or send the Stripe receipt and the numbers to kepthour.brief@gmail.com.</p>
   <p><a class="btn" href="{SITE}/">Back to the calculator</a></p>
 </main>
 """
-    write("sheet/thanks/index.html", head("Sheet requested — Kept Hour", "Your Kept Hour sheet request was received. You have not been charged.", "/sheet/thanks/") + thanks_body + FOOT)
+    write("sheet/thanks/index.html", head("Sheet requested — Kept Hour", "Your Kept Hour sheet request was received. Stripe’s confirmation is the receipt, not the sheet.", "/sheet/thanks/") + thanks_body + FOOT)
 
 
 def newsletter() -> None:
@@ -868,12 +870,12 @@ def privacy() -> None:
     body = """
 <main class="hero"><p class="kicker">Privacy</p><h1>The calculator does not know you.</h1></main>
 <section class="prose">
-  <p>Numbers you type stay in the page. The share link puts those numbers in the URL so you can send them. If you send the link, you are publishing the numbers in it. Do not put a secret compensation figure in a URL you post to a company Slack if that figure is confidential.</p>
-  <p>There is no analytics pixel and no advertising cookie. GitHub Pages may log ordinary server requests the way any host does. The Monday form sends your email to FormSubmit, which forwards it to kepthour.brief@gmail.com. That is the only personal data the form collects. We do not sell it.</p>
-  <p>We do not sell personal information. We do not have any, unless you email us.</p>
+  <p>Numbers you type stay in the page until you send them. The share link puts those numbers in the URL so you can send them. If you send the link, you are publishing the numbers in it. Do not put a secret compensation figure in a URL you post to a company Slack if that figure is confidential.</p>
+  <p>This site loads Cloudflare Web Analytics so the owner can count unique visitors. That beacon is on every page. It is not an advertising cookie, and the site does not sell the count. GitHub Pages may also log ordinary server requests the way any host does.</p>
+  <p>The Monday form and the sheet form send your email to FormSubmit, which forwards it to kepthour.brief@gmail.com. Payment, if you buy the sheet, is handled by Stripe on a page Stripe hosts. We do not sell personal information.</p>
 </section>
 """
-    write("privacy/index.html", head("Privacy — Kept Hour", "Kept Hour stores nothing you type. The Monday form sends an email address to FormSubmit and nowhere else.", "/privacy/") + body + FOOT)
+    write("privacy/index.html", head("Privacy — Kept Hour", "Kept Hour counts visitors with Cloudflare Web Analytics. Forms send an email address to FormSubmit. Payment is Stripe.", "/privacy/") + body + FOOT)
 
 
 def thanks() -> None:

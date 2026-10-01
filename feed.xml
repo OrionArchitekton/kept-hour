@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Kept Hour</title>
+  <link>https://orionarchitekton.github.io/kept-hour/</link>
+  <description>Salary arithmetic after tax, commute, and meetings. One number per item. Planning tool, not tax advice.</description>
+  <lastBuildDate>2026-10-01T00:00:00Z</lastBuildDate>
+  <item>
+    <title>The raise that lowers the hour</title>
+    <link>https://orionarchitekton.github.io/kept-hour/compare/</link>
+    <guid isPermaLink="false">tag:orionarchitekton.github.io,2026-10-01:kept-hour/compare</guid>
+    <pubDate>2026-10-01T00:00:00Z</pubDate>
+    <description>$70,000 at 40 hours keeps $26.25. $90,000 at 55 hours keeps $24.55. Same tax, same weeks, no commute.</description>
+  </item>
+  <item>
+    <title>Five extra hours is 250 hours a year</title>
+    <link>https://orionarchitekton.github.io/kept-hour/five-hours/</link>
+    <guid isPermaLink="false">tag:orionarchitekton.github.io,2026-09-26:kept-hour/five-hours</guid>
+    <pubDate>2026-09-26T00:00:00Z</pubDate>
+    <description>At $90,000 the kept hour falls from $33.75 to $30.00. The salary does not move.</description>
+  </item>
+  <item>
+    <title>A 40-minute commute is 167 hours a year</title>
+    <link>https://orionarchitekton.github.io/kept-hour/commute/</link>
+    <guid isPermaLink="false">tag:orionarchitekton.github.io,2026-09-26:kept-hour/commute</guid>
+    <pubDate>2026-09-26T00:00:00Z</pubDate>
+    <description>Unpaid is not free. Price the seat at the kept hour.</description>
+  </item>
+  <item>
+    <title>Eight meeting hours a week is 400 hours a year</title>
+    <link>https://orionarchitekton.github.io/kept-hour/meetings/8-hours/</link>
+    <guid isPermaLink="false">tag:orionarchitekton.github.io,2026-09-26:kept-hour/meetings-8</guid>
+    <pubDate>2026-09-26T00:00:00Z</pubDate>
+    <description>If the series produces no decision you can name, that is the number in the decline.</description>
+  </item>
+  <item>
+    <title>Dividing by 2,080 hides the week</title>
+    <link>https://orionarchitekton.github.io/kept-hour/salary/90000/</link>
+    <guid isPermaLink="false">tag:orionarchitekton.github.io,2026-09-26:kept-hour/salary-90000</guid>
+    <pubDate>2026-09-26T00:00:00Z</pubDate>
+    <description>$90,000 at the hours you actually work is not the LinkedIn hourly.</description>
+  </item>
+  <item>
+    <title>Software engineer, typical week</title>
+    <link>https://orionarchitekton.github.io/kept-hour/jobs/software-engineer/</link>
+    <guid isPermaLink="false">tag:orionarchitekton.github.io,2026-09-26:kept-hour/software-engineer</guid>
+    <pubDate>2026-09-26T00:00:00Z</pubDate>
+    <description>A typical $128,000 at 45 hours. Change the hours if the week is worse.</description>
+  </item>
+</channel>
+</rss>

@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 SITE = "https://orionarchitekton.github.io/kept-hour"
-UPDATED = "2026-09-26"
+UPDATED = "2026-10-01"
 
 ROLES = [
     ("software-engineer", "Software engineer", 128000, 45),
@@ -199,6 +199,7 @@ button, .btn {
   letter-spacing: .03em; text-decoration: none; cursor: pointer;
 }
 button:hover, .btn:hover { background: var(--rust-deep); color: white; }
+pre.paste { white-space: pre-wrap; font: 16px/1.45 Georgia, serif; background: var(--cream); border-radius: 12px; padding: 14px; margin: 0; }
 .btn.moss { background: var(--moss); }
 .stat { padding: 8px 0; }
 .stat b { display: block; font-size: 34px; letter-spacing: -0.03em; line-height: 1.05; }
@@ -319,6 +320,7 @@ def head(title: str, desc: str, path: str, extra: str = "") -> str:
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{SITE}/favicon.png">
+<link rel="alternate" type="application/rss+xml" title="Kept Hour" href="{SITE}/feed.xml">
 <style>{CSS}</style>
 {extra}
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "f1ee4bdd16e746e99bb7123a719c77c3"}}'></script>
@@ -338,6 +340,7 @@ def head(title: str, desc: str, path: str, extra: str = "") -> str:
     <a href="{SITE}/commute/">Commute</a>
     <a href="{SITE}/newsletter/">Brief</a>
     <a href="{SITE}/sheet/">Sheet</a>
+    <a href="{SITE}/paste/">Paste</a>
   </nav>
 </header>
 """
@@ -912,6 +915,8 @@ def distribution() -> None:
     text = f"""# Kept Hour — 30-day distribution pack
 
 Live: {SITE}/
+Paste pack (copy a block, do not spray): {SITE}/paste/
+Feed: {SITE}/feed.xml
 
 ## What this is
 A free salary-to-real-hourly calculator. Share unit is a specific result URL, not the homepage.
@@ -936,7 +941,8 @@ If your week is worse than the default, change the hours. The tool will not flat
 
 1. A salary is an annual costume. The kept hour is the truth. {SITE}/
 2. 8 meetings a week is 400 hours a year. Price them before you accept the series. {SITE}/meetings/8-hours/
-3. The commute is not free because it is unpaid. {SITE}/
+3. The commute is not free because it is unpaid. {SITE}/commute/
+4. $70k at 40 hours keeps more per hour than $90k at 55. {SITE}/compare/
 
 ## Communities where the question already exists
 - r/personalfinance, r/salary, r/jobs, r/cscareerquestions, r/nursing, r/teachers — only when someone asks “is this offer worth it”
@@ -944,24 +950,181 @@ If your week is worse than the default, change the hours. The tool will not flat
 - Indie Hackers / specific job Discords: one post, then leave
 
 ## Email the list
-Inbox to claim: kepthour.brief@gmail.com
-Form endpoint is a placeholder until Formspree (or Buttondown) is connected.
+Inbox: kepthour.brief@gmail.com
+Monday form posts there via FormSubmit. The public feed is {SITE}/feed.xml for anyone who will not give an email.
 
 ## Monetization lane (after traffic, not before)
 1. Free Monday brief (one number).
-2. $39 annual Kept Hour brief: their numbers, one page, which hours to cut or sell.
+2. $39 one-page sheet: their numbers, which hours to cut or sell. Stripe link is on {SITE}/sheet/. The site cannot see the payment.
 3. Optional labeled affiliate later for tax software or a calendar tool. Not on day one. Trust is the asset.
 
-## Day 1 human blockers
-- Claim kepthour.brief@gmail.com (or forward another inbox).
-- Optional: connect a real Formspree/Buttondown form id in newsletter/index.html.
-- Optional: custom domain. GitHub Pages URL works without it.
+## Still human
+- Revoke the Gmail app password if it is still listed. Do not create another one for this seat.
+- One real post, in a thread that already asked the question, or from an account the owner controls.
+- Custom domain is optional. GitHub Pages URL works without it.
 """
     (ROOT / "DISTRIBUTION.md").write_text(text)
 
 
+def _x(text: str) -> str:
+    return (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def paste_page() -> None:
+    """Copy-ready blocks. The page is the distribution unit this seat can ship."""
+    blocks = [
+        (
+            "The offer that looks like a raise",
+            f"$70,000 at 40 hours keeps $26.25 an hour. $90,000 at 55 hours keeps $24.55. Same 25% tax, same 50 weeks, no commute. The salary went up. The hour went down.\n\n{SITE}/compare/",
+        ),
+        (
+            "Five extra hours",
+            f"Five extra hours a week is 250 hours a year. That is 6.25 normal work-weeks. At $90,000 the kept hour falls from $33.75 to $30.00. The salary does not move.\n\n{SITE}/five-hours/",
+        ),
+        (
+            "The commute",
+            f"A 40-minute round trip, 5 days, 50 weeks, is 167 hours. Unpaid is not the same as free. Price it at the kept hour before calling the office a perk.\n\n{SITE}/commute/",
+        ),
+        (
+            "The meeting series",
+            "Eight meeting hours a week is 400 hours a year. If the series produces no decision you can name, that is the number to put in the decline.\n\n" + SITE + "/meetings/8-hours/",
+        ),
+        (
+            "The flattering divide",
+            f"Dividing a salary by 2,080 assumes 40 hours and 52 weeks. A 47-hour week for 50 weeks has already donated 350 hours before tax or the commute.\n\n{SITE}/salary/90000/",
+        ),
+        (
+            "One job, one link",
+            f"A software engineer at a typical $128,000 and a 45-hour week is not the LinkedIn hourly. The page has the arithmetic. Change the hours if the week is worse.\n\n{SITE}/jobs/software-engineer/",
+        ),
+    ]
+    cards = []
+    for title, body in blocks:
+        cards.append(
+            "<article class=\"card\">"
+            f"<h2>{_x(title)}</h2>"
+            f"<pre class=\"paste\">{_x(body)}</pre>"
+            "<p><button type=\"button\" class=\"copy-paste\">Copy this block</button></p>"
+            "</article>"
+        )
+    body = f"""
+<main class="hero">
+  <p class="kicker">Distribution</p>
+  <h1>Paste a number. Do not paste the homepage.</h1>
+  <p class="lede">Six blocks. Each one is a result someone can check. Use one where the question was already asked. Spraying them is how this gets ignored.</p>
+</main>
+<section class="grid" style="gap:18px">
+  {''.join(cards)}
+</section>
+<section class="prose">
+  <h2>If you will not give an email</h2>
+  <p>The same numbers are a public feed: <a href="{SITE}/feed.xml">feed.xml</a>. One item per block. No list, no account.</p>
+  <p>The $39 sheet is a different action. It is not in these blocks. <a href="{SITE}/sheet/">That page</a> is for someone who already wants their own numbers written out.</p>
+</section>
+<script>
+document.querySelectorAll(".copy-paste").forEach((btn) => {{
+  btn.addEventListener("click", async () => {{
+    const pre = btn.closest("article").querySelector("pre");
+    try {{
+      await navigator.clipboard.writeText(pre.textContent);
+      btn.textContent = "Copied";
+    }} catch (e) {{
+      btn.textContent = "Select the block";
+    }}
+  }});
+}});
+</script>
+"""
+    write(
+        "paste/index.html",
+        head(
+            "Paste pack — Kept Hour",
+            "Six copy-ready posts. Each one links a specific Kept Hour result, not the homepage.",
+            "/paste/",
+        )
+        + body
+        + FOOT,
+    )
+
+
+def feed() -> None:
+    """Public RSS. No email, no account. Items match the paste pack."""
+    items = [
+        (
+            "tag:orionarchitekton.github.io,2026-10-01:kept-hour/compare",
+            "The raise that lowers the hour",
+            f"$70,000 at 40 hours keeps $26.25. $90,000 at 55 hours keeps $24.55. Same tax, same weeks, no commute.",
+            f"{SITE}/compare/",
+            "2026-10-01T00:00:00Z",
+        ),
+        (
+            "tag:orionarchitekton.github.io,2026-09-26:kept-hour/five-hours",
+            "Five extra hours is 250 hours a year",
+            "At $90,000 the kept hour falls from $33.75 to $30.00. The salary does not move.",
+            f"{SITE}/five-hours/",
+            "2026-09-26T00:00:00Z",
+        ),
+        (
+            "tag:orionarchitekton.github.io,2026-09-26:kept-hour/commute",
+            "A 40-minute commute is 167 hours a year",
+            "Unpaid is not free. Price the seat at the kept hour.",
+            f"{SITE}/commute/",
+            "2026-09-26T00:00:00Z",
+        ),
+        (
+            "tag:orionarchitekton.github.io,2026-09-26:kept-hour/meetings-8",
+            "Eight meeting hours a week is 400 hours a year",
+            "If the series produces no decision you can name, that is the number in the decline.",
+            f"{SITE}/meetings/8-hours/",
+            "2026-09-26T00:00:00Z",
+        ),
+        (
+            "tag:orionarchitekton.github.io,2026-09-26:kept-hour/salary-90000",
+            "Dividing by 2,080 hides the week",
+            "$90,000 at the hours you actually work is not the LinkedIn hourly.",
+            f"{SITE}/salary/90000/",
+            "2026-09-26T00:00:00Z",
+        ),
+        (
+            "tag:orionarchitekton.github.io,2026-09-26:kept-hour/software-engineer",
+            "Software engineer, typical week",
+            "A typical $128,000 at 45 hours. Change the hours if the week is worse.",
+            f"{SITE}/jobs/software-engineer/",
+            "2026-09-26T00:00:00Z",
+        ),
+    ]
+    rendered = []
+    for guid, title, desc, link, when in items:
+        rendered.append(
+            f"""  <item>
+    <title>{_x(title)}</title>
+    <link>{link}</link>
+    <guid isPermaLink="false">{guid}</guid>
+    <pubDate>{when}</pubDate>
+    <description>{_x(desc)}</description>
+  </item>"""
+        )
+    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Kept Hour</title>
+  <link>{SITE}/</link>
+  <description>Salary arithmetic after tax, commute, and meetings. One number per item. Planning tool, not tax advice.</description>
+  <lastBuildDate>2026-10-01T00:00:00Z</lastBuildDate>
+{chr(10).join(rendered)}
+</channel>
+</rss>
+"""
+    write("feed.xml", xml)
+
+
 def main() -> None:
-    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/five-hours/", "/commute/", "/sheet/", "/sheet/thanks/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
+    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/five-hours/", "/commute/", "/sheet/", "/sheet/thanks/", "/paste/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
     home()
     salary_index()
     for s in SALARIES:
@@ -990,6 +1153,8 @@ def main() -> None:
     thanks()
     about()
     privacy()
+    paste_page()
+    feed()
     robots_and_sitemap(urls)
     distribution()
     pages = list(ROOT.rglob("index.html"))

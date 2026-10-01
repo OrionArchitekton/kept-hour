@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About Kept Hour</title>
-<meta name="description" content="Why Kept Hour exists, how the math works, and how to send a correction.">
-<link rel="canonical" href="https://orionarchitekton.github.io/kept-hour/about/">
-<meta property="og:title" content="About Kept Hour">
-<meta property="og:description" content="Why Kept Hour exists, how the math works, and how to send a correction.">
+<title>Paste pack — Kept Hour</title>
+<meta name="description" content="Six copy-ready posts. Each one links a specific Kept Hour result, not the homepage.">
+<link rel="canonical" href="https://orionarchitekton.github.io/kept-hour/paste/">
+<meta property="og:title" content="Paste pack — Kept Hour">
+<meta property="og:description" content="Six copy-ready posts. Each one links a specific Kept Hour result, not the homepage.">
 <meta property="og:image" content="https://orionarchitekton.github.io/kept-hour/assets/og.png">
-<meta property="og:url" content="https://orionarchitekton.github.io/kept-hour/about/">
+<meta property="og:url" content="https://orionarchitekton.github.io/kept-hour/paste/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="https://orionarchitekton.github.io/kept-hour/favicon.png">
@@ -129,17 +129,43 @@ th { font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 12px; letter
 </header>
 
 <main class="hero">
-  <p class="kicker">About</p>
-  <h1>Kept Hour exists to make a salary legible.</h1>
+  <p class="kicker">Distribution</p>
+  <h1>Paste a number. Do not paste the homepage.</h1>
+  <p class="lede">Six blocks. Each one is a result someone can check. Use one where the question was already asked. Spraying them is how this gets ignored.</p>
 </main>
-<section class="prose">
-  <p>A salary is an annual costume. Employers like it because it hides the week. Workers repeat it because it is the number they were given. The hour, after tax, after the commute, after the meetings, is the number that decides whether a job is a life or a lease on one.</p>
-  <p>This site is a static calculator and a set of specific pages so people can share a result without making an account. It is operated as an independent project. It is not a bank, not a tax preparer, and not an employer.</p>
-  <p>Corrections: if a default salary, tax load, or rent is wildly wrong for a role or a city, send the better public source. Defaults are planning anchors, updated when a better anchor is boring and checkable.</p>
-  <p>Contact for the brief, corrections, and partnerships: <a href="mailto:kepthour.brief@gmail.com">kepthour.brief@gmail.com</a>. That inbox is the human step. The site does not need an account to be useful.</p>
-  <h2>Method</h2>
-  <p>Gross hourly = annual salary / (weekly hours × weeks worked). Kept hour = gross hourly × (1 − tax load). Commute hours = (round-trip minutes / 60) × commute days × weeks. Commute cost = commute hours × kept hour. Meeting cost = weekly meeting hours × weeks × kept hour. Evenings sold = max(0, weekly hours − 40) × weeks. None of these are tax advice. They are the same arithmetic a spreadsheet would do, written so a stranger can open a link.</p>
+<section class="grid" style="gap:18px">
+  <article class="card"><h2>The offer that looks like a raise</h2><pre class="paste">$70,000 at 40 hours keeps $26.25 an hour. $90,000 at 55 hours keeps $24.55. Same 25% tax, same 50 weeks, no commute. The salary went up. The hour went down.
+
+https://orionarchitekton.github.io/kept-hour/compare/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article><article class="card"><h2>Five extra hours</h2><pre class="paste">Five extra hours a week is 250 hours a year. That is 6.25 normal work-weeks. At $90,000 the kept hour falls from $33.75 to $30.00. The salary does not move.
+
+https://orionarchitekton.github.io/kept-hour/five-hours/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article><article class="card"><h2>The commute</h2><pre class="paste">A 40-minute round trip, 5 days, 50 weeks, is 167 hours. Unpaid is not the same as free. Price it at the kept hour before calling the office a perk.
+
+https://orionarchitekton.github.io/kept-hour/commute/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article><article class="card"><h2>The meeting series</h2><pre class="paste">Eight meeting hours a week is 400 hours a year. If the series produces no decision you can name, that is the number to put in the decline.
+
+https://orionarchitekton.github.io/kept-hour/meetings/8-hours/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article><article class="card"><h2>The flattering divide</h2><pre class="paste">Dividing a salary by 2,080 assumes 40 hours and 52 weeks. A 47-hour week for 50 weeks has already donated 350 hours before tax or the commute.
+
+https://orionarchitekton.github.io/kept-hour/salary/90000/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article><article class="card"><h2>One job, one link</h2><pre class="paste">A software engineer at a typical $128,000 and a 45-hour week is not the LinkedIn hourly. The page has the arithmetic. Change the hours if the week is worse.
+
+https://orionarchitekton.github.io/kept-hour/jobs/software-engineer/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article>
 </section>
+<section class="prose">
+  <h2>If you will not give an email</h2>
+  <p>The same numbers are a public feed: <a href="https://orionarchitekton.github.io/kept-hour/feed.xml">feed.xml</a>. One item per block. No list, no account.</p>
+  <p>The $39 sheet is a different action. It is not in these blocks. <a href="https://orionarchitekton.github.io/kept-hour/sheet/">That page</a> is for someone who already wants their own numbers written out.</p>
+</section>
+<script>
+document.querySelectorAll(".copy-paste").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const pre = btn.closest("article").querySelector("pre");
+    try {
+      await navigator.clipboard.writeText(pre.textContent);
+      btn.textContent = "Copied";
+    } catch (e) {
+      btn.textContent = "Select the block";
+    }
+  });
+});
+</script>
 
 <footer class="site">
   <p>Kept Hour is a planning tool, not tax, legal, or financial advice. Tax loads and rents are labeled defaults so you can see the shape of a year, then replace them with your own numbers. Figures update in the browser. No account. No tracking pixels.</p>

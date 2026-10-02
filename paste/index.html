@@ -144,7 +144,7 @@ https://orionarchitekton.github.io/kept-hour/commute/</pre><p><button type="butt
 
 https://orionarchitekton.github.io/kept-hour/meetings/8-hours/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article><article class="card"><h2>The flattering divide</h2><pre class="paste">Dividing a salary by 2,080 assumes 40 hours and 52 weeks. A 47-hour week for 50 weeks has already donated 350 hours before tax or the commute.
 
-https://orionarchitekton.github.io/kept-hour/salary/90000/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article><article class="card"><h2>One job, one link</h2><pre class="paste">A software engineer at a typical $128,000 and a 45-hour week is not the LinkedIn hourly. The page has the arithmetic. Change the hours if the week is worse.
+https://orionarchitekton.github.io/kept-hour/salary/90000/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article><article class="card"><h2>One job, one link</h2><pre class="paste">A software engineer at a typical $128,000 and a 45-hour week is not the LinkedIn hourly. The page has the arithmetic. The $9 file is the same numbers, downloadable.
 
 https://orionarchitekton.github.io/kept-hour/jobs/software-engineer/</pre><p><button type="button" class="copy-paste">Copy this block</button></p></article>
 </section>
@@ -169,7 +169,7 @@ document.querySelectorAll(".copy-paste").forEach((btn) => {
 
 <footer class="site">
   <p>Kept Hour is a planning tool, not tax, legal, or financial advice. Tax loads and rents are labeled defaults so you can see the shape of a year, then replace them with your own numbers. Figures update in the browser. No account. No tracking pixels.</p>
-  <p>Built 2026-10-01. <a href="https://orionarchitekton.github.io/kept-hour/about/">About</a> · <a href="https://orionarchitekton.github.io/kept-hour/privacy/">Privacy</a> · <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Monday brief</a> · <a href="https://orionarchitekton.github.io/kept-hour/sitemap.xml">Sitemap</a></p>
+  <p>Built 2026-10-02. <a href="https://orionarchitekton.github.io/kept-hour/about/">About</a> · <a href="https://orionarchitekton.github.io/kept-hour/privacy/">Privacy</a> · <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Monday brief</a> · <a href="https://orionarchitekton.github.io/kept-hour/sitemap.xml">Sitemap</a></p>
 </footer>
 </div>
 <script>
@@ -219,6 +219,8 @@ function compute() {
   const url = location.pathname + "?" + params.toString();
   const link = document.getElementById("perm");
   if (link) link.textContent = url;
+  const sheet = document.getElementById("sheet-link");
+  if (sheet) sheet.href = "/kept-hour/sheet/?" + params.toString();
   history.replaceState(null, "", url);
 }
 function bootFromQuery() {

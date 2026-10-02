@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sheet requested — Kept Hour</title>
-<meta name="description" content="Your Kept Hour sheet request was received. Stripe’s confirmation is the receipt, not the sheet.">
+<title>Your Kept Hour sheet</title>
+<meta name="description" content="Download the one-page sheet for the numbers in this link. Stripe’s confirmation is the receipt.">
 <link rel="canonical" href="https://orionarchitekton.github.io/kept-hour/sheet/thanks/">
-<meta property="og:title" content="Sheet requested — Kept Hour">
-<meta property="og:description" content="Your Kept Hour sheet request was received. Stripe’s confirmation is the receipt, not the sheet.">
+<meta property="og:title" content="Your Kept Hour sheet">
+<meta property="og:description" content="Download the one-page sheet for the numbers in this link. Stripe’s confirmation is the receipt.">
 <meta property="og:image" content="https://orionarchitekton.github.io/kept-hour/assets/og.png">
 <meta property="og:url" content="https://orionarchitekton.github.io/kept-hour/sheet/thanks/">
 <meta property="og:type" content="website">
@@ -130,14 +130,91 @@ th { font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 12px; letter
 
 <main class="hero">
   <p class="kicker">Sheet</p>
-  <h1>Paid. Now send the numbers if you have not.</h1>
-  <p class="lede">Stripe’s confirmation is the receipt. It is not the sheet. If you already submitted the form, nothing else is required. If you paid first, submit the form on the sheet page from the same email, or send the Stripe receipt and the numbers to kepthour.brief@gmail.com.</p>
-  <p><a class="btn" href="https://orionarchitekton.github.io/kept-hour/">Back to the calculator</a></p>
+  <h1>Download the file.</h1>
+  <p class="lede">Stripe’s confirmation is the receipt. This page is the sheet. It uses the numbers in the link. If you paid, download it. If you did not, the same file is $9 on the previous page.</p>
+  <p><button type="button" id="download-sheet" class="btn">Download kept-hour.txt</button></p>
+  <pre class="paste" id="sheet-preview"></pre>
+  <p class="note">Planning arithmetic, not tax advice. Refund: reply to the Stripe receipt within 7 days. A human rewrite is optional: kepthour.brief@gmail.com with the receipt.</p>
 </main>
+<script>
+function money(n, d) {
+  d = d == null ? 0 : d;
+  return n.toLocaleString("en-US", {style:"currency", currency:"USD", maximumFractionDigits:d, minimumFractionDigits:d});
+}
+function num(q, key, fallback) {
+  const v = parseFloat(q.get(key));
+  return isFinite(v) ? v : fallback;
+}
+function buildSheet() {
+  const q = new URLSearchParams(location.search);
+  const salary = num(q, "s", 85000);
+  const hours = Math.max(1, num(q, "h", 45));
+  const weeks = Math.max(1, num(q, "w", 50));
+  const taxPct = Math.min(60, Math.max(0, num(q, "t", 25)));
+  const tax = taxPct / 100;
+  const commute = Math.max(0, num(q, "c", 0));
+  const days = Math.max(0, num(q, "d", 5));
+  const meetings = Math.max(0, num(q, "m", 0));
+  const gross = salary / (hours * weeks);
+  const kept = gross * (1 - tax);
+  const commuteYear = (commute / 60) * days * weeks;
+  const trueWeekly = hours + (commute / 60) * days;
+  const trueKept = (salary * (1 - tax)) / (trueWeekly * weeks);
+  const evenings = Math.max(0, hours - 40) * weeks;
+  const meetingYear = meetings * weeks;
+  const blocks = [
+    ["evenings above 40", evenings, evenings * kept],
+    ["commute", commuteYear, commuteYear * kept],
+    ["meetings", meetingYear, meetingYear * kept],
+  ];
+  blocks.sort((a, b) => b[2] - a[2]);
+  const cut = blocks[0];
+  const cutLine = cut[1] <= 0
+    ? "No block is large enough to cut. The week is already close to 40 hours with no commute and no meetings in these numbers."
+    : "Cut " + cut[0] + " first. It is " + Math.round(cut[1]) + " hours, about " + money(cut[2], 0) + " at this kept hour.";
+  return [
+    "KEPT HOUR",
+    "Planning arithmetic. Not tax, legal, or financial advice.",
+    "",
+    "Salary: " + money(salary, 0),
+    "Real hours / week: " + hours,
+    "Weeks: " + weeks,
+    "Tax load used: " + taxPct + "%",
+    "Round-trip commute: " + commute + " min, " + days + " days",
+    "Meeting hours / week: " + meetings,
+    "",
+    "Gross hour: " + money(gross, 2),
+    "Kept hour, after that tax load: " + money(kept, 2),
+    "Kept hour if commute counts as work: " + money(trueKept, 2),
+    "Evenings already sold: " + Math.round(evenings) + " hours",
+    "Commute: " + Math.round(commuteYear) + " hours, " + money(commuteYear * kept, 0),
+    "Meetings: " + Math.round(meetingYear) + " hours, " + money(meetingYear * kept, 0),
+    "",
+    cutLine,
+    "",
+    "Source: " + location.href,
+  ].join("\n");
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const text = buildSheet();
+  const pre = document.getElementById("sheet-preview");
+  if (pre) pre.textContent = text;
+  const btn = document.getElementById("download-sheet");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const blob = new Blob([text], {type:"text/plain"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "kept-hour.txt";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+});
+</script>
 
 <footer class="site">
   <p>Kept Hour is a planning tool, not tax, legal, or financial advice. Tax loads and rents are labeled defaults so you can see the shape of a year, then replace them with your own numbers. Figures update in the browser. No account. No tracking pixels.</p>
-  <p>Built 2026-10-01. <a href="https://orionarchitekton.github.io/kept-hour/about/">About</a> · <a href="https://orionarchitekton.github.io/kept-hour/privacy/">Privacy</a> · <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Monday brief</a> · <a href="https://orionarchitekton.github.io/kept-hour/sitemap.xml">Sitemap</a></p>
+  <p>Built 2026-10-02. <a href="https://orionarchitekton.github.io/kept-hour/about/">About</a> · <a href="https://orionarchitekton.github.io/kept-hour/privacy/">Privacy</a> · <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Monday brief</a> · <a href="https://orionarchitekton.github.io/kept-hour/sitemap.xml">Sitemap</a></p>
 </footer>
 </div>
 <script>
@@ -187,6 +264,8 @@ function compute() {
   const url = location.pathname + "?" + params.toString();
   const link = document.getElementById("perm");
   if (link) link.textContent = url;
+  const sheet = document.getElementById("sheet-link");
+  if (sheet) sheet.href = "/kept-hour/sheet/?" + params.toString();
   history.replaceState(null, "", url);
 }
 function bootFromQuery() {

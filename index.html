@@ -162,8 +162,9 @@ th { font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 12px; letter
       <div class="stat"><b id="out-annual-net">—</b><span>Take-home, same tax load</span></div>
       <div class="share-row">
         <button type="button" id="copy-btn">Copy the number</button>
-        <a class="btn moss" href="https://orionarchitekton.github.io/kept-hour/newsletter/">Get the Monday number</a>
+        <a class="btn" id="sheet-link" href="https://orionarchitekton.github.io/kept-hour/sheet/">Get this week as a $9 sheet</a>
       </div>
+      <p class="note">The calculator stays free. The sheet is the same numbers, as a file, with the one block to cut. Pay on Stripe. Download on the next page. No email required.</p>
       <p class="note">Share link updates as you type: <code id="perm"></code></p>
       <textarea id="share-text" hidden></textarea>
     </div>
@@ -200,7 +201,7 @@ th { font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 12px; letter
 
 <footer class="site">
   <p>Kept Hour is a planning tool, not tax, legal, or financial advice. Tax loads and rents are labeled defaults so you can see the shape of a year, then replace them with your own numbers. Figures update in the browser. No account. No tracking pixels.</p>
-  <p>Built 2026-10-01. <a href="https://orionarchitekton.github.io/kept-hour/about/">About</a> · <a href="https://orionarchitekton.github.io/kept-hour/privacy/">Privacy</a> · <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Monday brief</a> · <a href="https://orionarchitekton.github.io/kept-hour/sitemap.xml">Sitemap</a></p>
+  <p>Built 2026-10-02. <a href="https://orionarchitekton.github.io/kept-hour/about/">About</a> · <a href="https://orionarchitekton.github.io/kept-hour/privacy/">Privacy</a> · <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Monday brief</a> · <a href="https://orionarchitekton.github.io/kept-hour/sitemap.xml">Sitemap</a></p>
 </footer>
 </div>
 <script>
@@ -250,6 +251,8 @@ function compute() {
   const url = location.pathname + "?" + params.toString();
   const link = document.getElementById("perm");
   if (link) link.textContent = url;
+  const sheet = document.getElementById("sheet-link");
+  if (sheet) sheet.href = "/kept-hour/sheet/?" + params.toString();
   history.replaceState(null, "", url);
 }
 function bootFromQuery() {

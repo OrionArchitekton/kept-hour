@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Kept Hour sheet — $39, one page</title>
-<meta name="description" content="One page with your kept hour, commute, meetings, and the block to cut. $39 once. The calculator stays free.">
+<title>The Kept Hour sheet — $9, one file</title>
+<meta name="description" content="Your kept hour, commute, meetings, and the block to cut, as a file. $9 once. The calculator stays free.">
 <link rel="canonical" href="https://orionarchitekton.github.io/kept-hour/sheet/">
-<meta property="og:title" content="The Kept Hour sheet — $39, one page">
-<meta property="og:description" content="One page with your kept hour, commute, meetings, and the block to cut. $39 once. The calculator stays free.">
+<meta property="og:title" content="The Kept Hour sheet — $9, one file">
+<meta property="og:description" content="Your kept hour, commute, meetings, and the block to cut, as a file. $9 once. The calculator stays free.">
 <meta property="og:image" content="https://orionarchitekton.github.io/kept-hour/assets/og.png">
 <meta property="og:url" content="https://orionarchitekton.github.io/kept-hour/sheet/">
 <meta property="og:type" content="website">
@@ -130,38 +130,36 @@ th { font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 12px; letter
 
 <main class="hero">
   <p class="kicker">The paid page</p>
-  <h1>One page. Your numbers. $39.</h1>
-  <p class="lede">The calculator is free and stays free. The sheet is the hour, the commute, the meetings, and the evenings, written as one page you can hand a future self. No subscription. No upsell. Pay $39. The receipt is Stripe’s. The page comes by email after you send the numbers.</p>
+  <h1>Your week, as a file. $9.</h1>
+  <p class="lede">The calculator is free and stays free. The sheet is the same arithmetic as one page you can hand a future self: kept hour, commute, meetings, evenings, and the one block to cut. No subscription. No email. Pay on Stripe. Download on the next page.</p>
 </main>
 <div class="grid grid-2">
   <div class="card">
-    <h2>What you send</h2>
-    <form action="https://formsubmit.co/kepthour.brief@gmail.com" method="POST">
-      <label for="buyer">Your email</label>
-      <input id="buyer" type="email" name="email" required placeholder="you@domain.com" autocomplete="email">
-      <label for="offer">Salary, hours, weeks, tax, commute, meetings</label>
-      <input id="offer" name="numbers" required placeholder="90000, 47 hours, 50 weeks, 27% tax, 35 min, 6 meeting hours">
-      <input type="hidden" name="_subject" value="Kept Hour sheet request — $39">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://orionarchitekton.github.io/kept-hour/sheet/thanks/">
-      <input type="text" name="_honey" style="display:none">
-      <p><button type="submit">Send the numbers</button></p>
-    </form>
-    <p><a class="btn" href="https://buy.stripe.com/bJe7sMgq9d9h5qpfWW8Zq01">Pay $39</a></p>
-    <p class="note">Payment is Stripe, one time, on an account the site owner controls. After you pay, Stripe shows its own confirmation page. It does not email you the sheet. Send the numbers in the form, from the same email Stripe has, and the page comes back to that inbox. If you pay and do not send the numbers, email kepthour.brief@gmail.com with the Stripe receipt and the numbers. Refund: reply within 7 days.</p>
+    <h2>What you pay</h2>
+    <p><a class="btn" id="pay-link" href="https://buy.stripe.com/bJe7sMgq9d9h5qpfWW8Zq01?redirect_url=https://orionarchitekton.github.io/kept-hour/sheet/thanks/">Pay $9</a></p>
+    <p class="note">Stripe shows the price. If that page does not say $9, do not pay. The receipt is Stripe’s confirmation. The file is the next page on this site. Refund: reply to the Stripe receipt within 7 days.</p>
+    <p class="note">Want a human to write it instead? Email the Stripe receipt and the numbers to kepthour.brief@gmail.com. That is optional. The download does not wait on it.</p>
   </div>
   <div class="card">
     <h2>What you get</h2>
-    <p>A single page: kept hour, true hour after commute, evenings already sold, commute priced, meetings priced, and one sentence on which block to cut or sell. Planning arithmetic, not tax advice. Delivered to the email you typed.</p>
-    <p>Price: $39 once, paid on Stripe before the page is written. The form itself does not charge your card. Stripe does, when you use the button. Refund: reply to the delivery email within 7 days.</p>
+    <p>A single text file: kept hour, true hour after commute, evenings already sold, commute priced, meetings priced, and one sentence on which block to cut. Planning arithmetic, not tax advice.</p>
     <p class="note">Worked example, free: <a href="https://orionarchitekton.github.io/kept-hour/compare/">$70k at 40 hours beats $90k at 55</a>. The sheet is that, with your week instead of the example.</p>
   </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const q = location.search || "";
+  const pay = document.getElementById("pay-link");
+  if (pay && q) {
+    const back = encodeURIComponent("https://orionarchitekton.github.io/kept-hour/sheet/thanks/" + q);
+    pay.href = "https://buy.stripe.com/bJe7sMgq9d9h5qpfWW8Zq01?redirect_url=" + back;
+  }
+});
+</script>
 
 <footer class="site">
   <p>Kept Hour is a planning tool, not tax, legal, or financial advice. Tax loads and rents are labeled defaults so you can see the shape of a year, then replace them with your own numbers. Figures update in the browser. No account. No tracking pixels.</p>
-  <p>Built 2026-10-01. <a href="https://orionarchitekton.github.io/kept-hour/about/">About</a> · <a href="https://orionarchitekton.github.io/kept-hour/privacy/">Privacy</a> · <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Monday brief</a> · <a href="https://orionarchitekton.github.io/kept-hour/sitemap.xml">Sitemap</a></p>
+  <p>Built 2026-10-02. <a href="https://orionarchitekton.github.io/kept-hour/about/">About</a> · <a href="https://orionarchitekton.github.io/kept-hour/privacy/">Privacy</a> · <a href="https://orionarchitekton.github.io/kept-hour/newsletter/">Monday brief</a> · <a href="https://orionarchitekton.github.io/kept-hour/sitemap.xml">Sitemap</a></p>
 </footer>
 </div>
 <script>
@@ -211,6 +209,8 @@ function compute() {
   const url = location.pathname + "?" + params.toString();
   const link = document.getElementById("perm");
   if (link) link.textContent = url;
+  const sheet = document.getElementById("sheet-link");
+  if (sheet) sheet.href = "/kept-hour/sheet/?" + params.toString();
   history.replaceState(null, "", url);
 }
 function bootFromQuery() {

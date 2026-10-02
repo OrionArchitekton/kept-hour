@@ -9,7 +9,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 SITE = "https://orionarchitekton.github.io/kept-hour"
-UPDATED = "2026-10-01"
+UPDATED = "2026-10-02"
+STRIPE = "https://buy.stripe.com/bJe7sMgq9d9h5qpfWW8Zq01"
 
 ROLES = [
     ("software-engineer", "Software engineer", 128000, 45),
@@ -278,6 +279,8 @@ function compute() {
   const url = location.pathname + "?" + params.toString();
   const link = document.getElementById("perm");
   if (link) link.textContent = url;
+  const sheet = document.getElementById("sheet-link");
+  if (sheet) sheet.href = "/kept-hour/sheet/?" + params.toString();
   history.replaceState(null, "", url);
 }
 function bootFromQuery() {
@@ -394,8 +397,9 @@ def calc_block(salary=85000, hours=45, weeks=50, tax=25, commute=40, days=5, mee
       <div class="stat"><b id="out-annual-net">—</b><span>Take-home, same tax load</span></div>
       <div class="share-row">
         <button type="button" id="copy-btn">Copy the number</button>
-        <a class="btn moss" href="{SITE}/newsletter/">Get the Monday number</a>
+        <a class="btn" id="sheet-link" href="{SITE}/sheet/">Get this week as a $9 sheet</a>
       </div>
+      <p class="note">The calculator stays free. The sheet is the same numbers, as a file, with the one block to cut. Pay on Stripe. Download on the next page. No email required.</p>
       <p class="note">Share link updates as you type: <code id="perm"></code></p>
       <textarea id="share-text" hidden></textarea>
     </div>
@@ -780,45 +784,120 @@ def sheet() -> None:
     body = f"""
 <main class="hero">
   <p class="kicker">The paid page</p>
-  <h1>One page. Your numbers. $39.</h1>
-  <p class="lede">The calculator is free and stays free. The sheet is the hour, the commute, the meetings, and the evenings, written as one page you can hand a future self. No subscription. No upsell. Pay $39. The receipt is Stripe’s. The page comes by email after you send the numbers.</p>
+  <h1>Your week, as a file. $9.</h1>
+  <p class="lede">The calculator is free and stays free. The sheet is the same arithmetic as one page you can hand a future self: kept hour, commute, meetings, evenings, and the one block to cut. No subscription. No email. Pay on Stripe. Download on the next page.</p>
 </main>
 <div class="grid grid-2">
   <div class="card">
-    <h2>What you send</h2>
-    <form action="https://formsubmit.co/kepthour.brief@gmail.com" method="POST">
-      <label for="buyer">Your email</label>
-      <input id="buyer" type="email" name="email" required placeholder="you@domain.com" autocomplete="email">
-      <label for="offer">Salary, hours, weeks, tax, commute, meetings</label>
-      <input id="offer" name="numbers" required placeholder="90000, 47 hours, 50 weeks, 27% tax, 35 min, 6 meeting hours">
-      <input type="hidden" name="_subject" value="Kept Hour sheet request — $39">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="{SITE}/sheet/thanks/">
-      <input type="text" name="_honey" style="display:none">
-      <p><button type="submit">Send the numbers</button></p>
-    </form>
-    <p><a class="btn" href="https://buy.stripe.com/bJe7sMgq9d9h5qpfWW8Zq01">Pay $39</a></p>
-    <p class="note">Payment is Stripe, one time, on an account the site owner controls. After you pay, Stripe shows its own confirmation page. It does not email you the sheet. Send the numbers in the form, from the same email Stripe has, and the page comes back to that inbox. If you pay and do not send the numbers, email kepthour.brief@gmail.com with the Stripe receipt and the numbers. Refund: reply within 7 days.</p>
+    <h2>What you pay</h2>
+    <p><a class="btn" id="pay-link" href="{STRIPE}?redirect_url={SITE}/sheet/thanks/">Pay $9</a></p>
+    <p class="note">Stripe shows the price. If that page does not say $9, do not pay. The receipt is Stripe’s confirmation. The file is the next page on this site. Refund: reply to the Stripe receipt within 7 days.</p>
+    <p class="note">Want a human to write it instead? Email the Stripe receipt and the numbers to kepthour.brief@gmail.com. That is optional. The download does not wait on it.</p>
   </div>
   <div class="card">
     <h2>What you get</h2>
-    <p>A single page: kept hour, true hour after commute, evenings already sold, commute priced, meetings priced, and one sentence on which block to cut or sell. Planning arithmetic, not tax advice. Delivered to the email you typed.</p>
-    <p>Price: $39 once, paid on Stripe before the page is written. The form itself does not charge your card. Stripe does, when you use the button. Refund: reply to the delivery email within 7 days.</p>
+    <p>A single text file: kept hour, true hour after commute, evenings already sold, commute priced, meetings priced, and one sentence on which block to cut. Planning arithmetic, not tax advice.</p>
     <p class="note">Worked example, free: <a href="{SITE}/compare/">$70k at 40 hours beats $90k at 55</a>. The sheet is that, with your week instead of the example.</p>
   </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {{
+  const q = location.search || "";
+  const pay = document.getElementById("pay-link");
+  if (pay && q) {{
+    const back = encodeURIComponent("{SITE}/sheet/thanks/" + q);
+    pay.href = "{STRIPE}?redirect_url=" + back;
+  }}
+}});
+</script>
 """
-    write("sheet/index.html", head("The Kept Hour sheet — $39, one page", "One page with your kept hour, commute, meetings, and the block to cut. $39 once. The calculator stays free.", "/sheet/") + body + FOOT)
+    write("sheet/index.html", head("The Kept Hour sheet — $9, one file", "Your kept hour, commute, meetings, and the block to cut, as a file. $9 once. The calculator stays free.", "/sheet/") + body + FOOT)
     thanks_body = f"""
 <main class="hero">
   <p class="kicker">Sheet</p>
-  <h1>Paid. Now send the numbers if you have not.</h1>
-  <p class="lede">Stripe’s confirmation is the receipt. It is not the sheet. If you already submitted the form, nothing else is required. If you paid first, submit the form on the sheet page from the same email, or send the Stripe receipt and the numbers to kepthour.brief@gmail.com.</p>
-  <p><a class="btn" href="{SITE}/">Back to the calculator</a></p>
+  <h1>Download the file.</h1>
+  <p class="lede">Stripe’s confirmation is the receipt. This page is the sheet. It uses the numbers in the link. If you paid, download it. If you did not, the same file is $9 on the previous page.</p>
+  <p><button type="button" id="download-sheet" class="btn">Download kept-hour.txt</button></p>
+  <pre class="paste" id="sheet-preview"></pre>
+  <p class="note">Planning arithmetic, not tax advice. Refund: reply to the Stripe receipt within 7 days. A human rewrite is optional: kepthour.brief@gmail.com with the receipt.</p>
 </main>
+<script>
+function money(n, d) {{
+  d = d == null ? 0 : d;
+  return n.toLocaleString("en-US", {{style:"currency", currency:"USD", maximumFractionDigits:d, minimumFractionDigits:d}});
+}}
+function num(q, key, fallback) {{
+  const v = parseFloat(q.get(key));
+  return isFinite(v) ? v : fallback;
+}}
+function buildSheet() {{
+  const q = new URLSearchParams(location.search);
+  const salary = num(q, "s", 85000);
+  const hours = Math.max(1, num(q, "h", 45));
+  const weeks = Math.max(1, num(q, "w", 50));
+  const taxPct = Math.min(60, Math.max(0, num(q, "t", 25)));
+  const tax = taxPct / 100;
+  const commute = Math.max(0, num(q, "c", 0));
+  const days = Math.max(0, num(q, "d", 5));
+  const meetings = Math.max(0, num(q, "m", 0));
+  const gross = salary / (hours * weeks);
+  const kept = gross * (1 - tax);
+  const commuteYear = (commute / 60) * days * weeks;
+  const trueWeekly = hours + (commute / 60) * days;
+  const trueKept = (salary * (1 - tax)) / (trueWeekly * weeks);
+  const evenings = Math.max(0, hours - 40) * weeks;
+  const meetingYear = meetings * weeks;
+  const blocks = [
+    ["evenings above 40", evenings, evenings * kept],
+    ["commute", commuteYear, commuteYear * kept],
+    ["meetings", meetingYear, meetingYear * kept],
+  ];
+  blocks.sort((a, b) => b[2] - a[2]);
+  const cut = blocks[0];
+  const cutLine = cut[1] <= 0
+    ? "No block is large enough to cut. The week is already close to 40 hours with no commute and no meetings in these numbers."
+    : "Cut " + cut[0] + " first. It is " + Math.round(cut[1]) + " hours, about " + money(cut[2], 0) + " at this kept hour.";
+  return [
+    "KEPT HOUR",
+    "Planning arithmetic. Not tax, legal, or financial advice.",
+    "",
+    "Salary: " + money(salary, 0),
+    "Real hours / week: " + hours,
+    "Weeks: " + weeks,
+    "Tax load used: " + taxPct + "%",
+    "Round-trip commute: " + commute + " min, " + days + " days",
+    "Meeting hours / week: " + meetings,
+    "",
+    "Gross hour: " + money(gross, 2),
+    "Kept hour, after that tax load: " + money(kept, 2),
+    "Kept hour if commute counts as work: " + money(trueKept, 2),
+    "Evenings already sold: " + Math.round(evenings) + " hours",
+    "Commute: " + Math.round(commuteYear) + " hours, " + money(commuteYear * kept, 0),
+    "Meetings: " + Math.round(meetingYear) + " hours, " + money(meetingYear * kept, 0),
+    "",
+    cutLine,
+    "",
+    "Source: " + location.href,
+  ].join("\\n");
+}}
+document.addEventListener("DOMContentLoaded", () => {{
+  const text = buildSheet();
+  const pre = document.getElementById("sheet-preview");
+  if (pre) pre.textContent = text;
+  const btn = document.getElementById("download-sheet");
+  if (!btn) return;
+  btn.addEventListener("click", () => {{
+    const blob = new Blob([text], {{type:"text/plain"}});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "kept-hour.txt";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }});
+}});
+</script>
 """
-    write("sheet/thanks/index.html", head("Sheet requested — Kept Hour", "Your Kept Hour sheet request was received. Stripe’s confirmation is the receipt, not the sheet.", "/sheet/thanks/") + thanks_body + FOOT)
+    write("sheet/thanks/index.html", head("Your Kept Hour sheet", "Download the one-page sheet for the numbers in this link. Stripe’s confirmation is the receipt.", "/sheet/thanks/") + thanks_body + FOOT)
 
 
 def newsletter() -> None:
@@ -955,7 +1034,7 @@ Monday form posts there via FormSubmit. The public feed is {SITE}/feed.xml for a
 
 ## Monetization lane (after traffic, not before)
 1. Free Monday brief (one number).
-2. $39 one-page sheet: their numbers, which hours to cut or sell. Stripe link is on {SITE}/sheet/. The site cannot see the payment.
+2. $9 one-page sheet: their numbers, which hours to cut. Stripe link is on {SITE}/sheet/. The file downloads in the browser. The site cannot see the payment. Stripe’s page must show $9 or the buyer should not pay.
 3. Optional labeled affiliate later for tax software or a calendar tool. Not on day one. Trust is the asset.
 
 ## Still human
@@ -1000,7 +1079,7 @@ def paste_page() -> None:
         ),
         (
             "One job, one link",
-            f"A software engineer at a typical $128,000 and a 45-hour week is not the LinkedIn hourly. The page has the arithmetic. Change the hours if the week is worse.\n\n{SITE}/jobs/software-engineer/",
+            f"A software engineer at a typical $128,000 and a 45-hour week is not the LinkedIn hourly. The page has the arithmetic. The $9 file is the same numbers, downloadable.\n\n{SITE}/jobs/software-engineer/",
         ),
     ]
     cards = []

@@ -230,7 +230,7 @@ function compute() {
   if (link) link.textContent = url;
   const sheet = document.getElementById("sheet-link");
   if (sheet) sheet.href = "/kept-hour/sheet/?" + params.toString();
-  history.replaceState(null, "", url);
+  if (document.getElementById("salary")) history.replaceState(null, "", url);
 }
 function bootFromQuery() {
   const q = new URLSearchParams(location.search);

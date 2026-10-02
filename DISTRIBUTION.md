@@ -41,7 +41,7 @@ Monday form posts there via FormSubmit. The public feed is https://orionarchitek
 
 ## Monetization lane (after traffic, not before)
 1. Free Monday brief (one number).
-2. $9 one-page sheet: their numbers, which hours to cut. Stripe link is on https://orionarchitekton.github.io/kept-hour/sheet/. The file downloads in the browser. The site cannot see the payment. Stripe’s page must show $9 or the buyer should not pay.
+2. $39 one-page sheet: their numbers, which hours to cut. Stripe link is on https://orionarchitekton.github.io/kept-hour/sheet/ and currently charges $39.00. The file downloads in the browser. The site cannot see the payment. Do not advertise a different price.
 3. Optional labeled affiliate later for tax software or a calendar tool. Not on day one. Trust is the asset.
 
 ## Still human

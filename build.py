@@ -397,9 +397,9 @@ def calc_block(salary=85000, hours=45, weeks=50, tax=25, commute=40, days=5, mee
       <div class="stat"><b id="out-annual-net">—</b><span>Take-home, same tax load</span></div>
       <div class="share-row">
         <button type="button" id="copy-btn">Copy the number</button>
-        <a class="btn" id="sheet-link" href="{SITE}/sheet/">Get this week as a $9 sheet</a>
+        <a class="btn" id="sheet-link" href="{SITE}/sheet/">Get this week as a $39 sheet</a>
       </div>
-      <p class="note">The calculator stays free. The sheet is the same numbers, as a file, with the one block to cut. Pay on Stripe. Download on the next page. No email required.</p>
+      <p class="note">The calculator stays free. The sheet is the same numbers, as a file, with the one block to cut. Stripe charges $39. No email required.</p>
       <p class="note">Share link updates as you type: <code id="perm"></code></p>
       <textarea id="share-text" hidden></textarea>
     </div>
@@ -784,15 +784,15 @@ def sheet() -> None:
     body = f"""
 <main class="hero">
   <p class="kicker">The paid page</p>
-  <h1>Your week, as a file. $9.</h1>
-  <p class="lede">The calculator is free and stays free. The sheet is the same arithmetic as one page you can hand a future self: kept hour, commute, meetings, evenings, and the one block to cut. No subscription. No email. Pay on Stripe. Download on the next page.</p>
+  <h1>Your week, as a file. $39.</h1>
+  <p class="lede">The calculator is free and stays free. The sheet is the same arithmetic as one page you can hand a future self: kept hour, commute, meetings, evenings, and the one block to cut. No subscription. No email. Pay on Stripe. The file is the next page, with your numbers in the link.</p>
 </main>
 <div class="grid grid-2">
   <div class="card">
     <h2>What you pay</h2>
-    <p><a class="btn" id="pay-link" href="{STRIPE}?redirect_url={SITE}/sheet/thanks/">Pay $9</a></p>
-    <p class="note">Stripe shows the price. If that page does not say $9, do not pay. The receipt is Stripe’s confirmation. The file is the next page on this site. Refund: reply to the Stripe receipt within 7 days.</p>
-    <p class="note">Want a human to write it instead? Email the Stripe receipt and the numbers to kepthour.brief@gmail.com. That is optional. The download does not wait on it.</p>
+    <p><a class="btn" id="pay-link" href="{STRIPE}">Pay $39</a></p>
+    <p class="note">Stripe shows $39.00. That is the price. If the checkout does not say $39.00, do not pay. Stripe’s confirmation is the receipt. It does not redirect back here. Keep this tab. After you pay, open the file page already filled with these numbers.</p>
+    <p><a id="file-link" href="{SITE}/sheet/thanks/">Open the file page</a></p>
   </div>
   <div class="card">
     <h2>What you get</h2>
@@ -803,20 +803,17 @@ def sheet() -> None:
 <script>
 document.addEventListener("DOMContentLoaded", () => {{
   const q = location.search || "";
-  const pay = document.getElementById("pay-link");
-  if (pay && q) {{
-    const back = encodeURIComponent("{SITE}/sheet/thanks/" + q);
-    pay.href = "{STRIPE}?redirect_url=" + back;
-  }}
+  const file = document.getElementById("file-link");
+  if (file) file.href = "{SITE}/sheet/thanks/" + q;
 }});
 </script>
 """
-    write("sheet/index.html", head("The Kept Hour sheet — $9, one file", "Your kept hour, commute, meetings, and the block to cut, as a file. $9 once. The calculator stays free.", "/sheet/") + body + FOOT)
+    write("sheet/index.html", head("The Kept Hour sheet — $39, one file", "Your kept hour, commute, meetings, and the block to cut, as a file. $39 once. The calculator stays free.", "/sheet/") + body + FOOT)
     thanks_body = f"""
 <main class="hero">
   <p class="kicker">Sheet</p>
   <h1>Download the file.</h1>
-  <p class="lede">Stripe’s confirmation is the receipt. This page is the sheet. It uses the numbers in the link. If you paid, download it. If you did not, the same file is $9 on the previous page.</p>
+  <p class="lede">Stripe’s confirmation is the receipt. This page is the sheet. It uses the numbers in the link. If you paid $39, download it. If you did not, go back and pay. The file is the same either way, which is why the price has to be low enough to be obvious.</p>
   <p><button type="button" id="download-sheet" class="btn">Download kept-hour.txt</button></p>
   <pre class="paste" id="sheet-preview"></pre>
   <p class="note">Planning arithmetic, not tax advice. Refund: reply to the Stripe receipt within 7 days. A human rewrite is optional: kepthour.brief@gmail.com with the receipt.</p>
@@ -1034,7 +1031,7 @@ Monday form posts there via FormSubmit. The public feed is {SITE}/feed.xml for a
 
 ## Monetization lane (after traffic, not before)
 1. Free Monday brief (one number).
-2. $9 one-page sheet: their numbers, which hours to cut. Stripe link is on {SITE}/sheet/. The file downloads in the browser. The site cannot see the payment. Stripe’s page must show $9 or the buyer should not pay.
+2. $39 one-page sheet: their numbers, which hours to cut. Stripe link is on {SITE}/sheet/ and currently charges $39.00. The file downloads in the browser. The site cannot see the payment. Do not advertise a different price.
 3. Optional labeled affiliate later for tax software or a calendar tool. Not on day one. Trust is the asset.
 
 ## Still human
@@ -1079,7 +1076,7 @@ def paste_page() -> None:
         ),
         (
             "One job, one link",
-            f"A software engineer at a typical $128,000 and a 45-hour week is not the LinkedIn hourly. The page has the arithmetic. The $9 file is the same numbers, downloadable.\n\n{SITE}/jobs/software-engineer/",
+            f"A software engineer at a typical $128,000 and a 45-hour week is not the LinkedIn hourly. The page has the arithmetic. Change the hours if the week is worse.\n\n{SITE}/jobs/software-engineer/",
         ),
     ]
     cards = []

@@ -131,7 +131,7 @@ th { font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 12px; letter
 <main class="hero">
   <p class="kicker">Sheet</p>
   <h1>Download the file.</h1>
-  <p class="lede">Stripe’s confirmation is the receipt. This page is the sheet. It uses the numbers in the link. If you paid $39, download it. If you did not, go back and pay. The file is the same either way, which is why the price has to be low enough to be obvious.</p>
+  <p class="lede">This page is the sheet. It uses the numbers in the link. The $39 button on the previous page is the paid copy: same arithmetic, plus the Stripe receipt if you want a human to check it. You do not need to pay to read the file.</p>
   <p><button type="button" id="download-sheet" class="btn">Download kept-hour.txt</button></p>
   <pre class="paste" id="sheet-preview"></pre>
   <p class="note">Planning arithmetic, not tax advice. Refund: reply to the Stripe receipt within 7 days. A human rewrite is optional: kepthour.brief@gmail.com with the receipt.</p>
@@ -276,10 +276,18 @@ function bootFromQuery() {
 function copyShare() {
   const t = document.getElementById("share-text");
   if (!t) return;
-  navigator.clipboard.writeText(t.value).then(() => {
+  const text = t.value;
+  const done = () => {
     const b = document.getElementById("copy-btn");
     if (b) { const old = b.textContent; b.textContent = "Copied"; setTimeout(() => b.textContent = old, 1200); }
-  });
+  };
+  if (navigator.share) {
+    navigator.share({ text: text }).then(done).catch(() => {
+      navigator.clipboard.writeText(text).then(done);
+    });
+    return;
+  }
+  navigator.clipboard.writeText(text).then(done);
 }
 document.addEventListener("DOMContentLoaded", () => {
   bootFromQuery();

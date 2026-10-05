@@ -291,10 +291,18 @@ function bootFromQuery() {
 function copyShare() {
   const t = document.getElementById("share-text");
   if (!t) return;
-  navigator.clipboard.writeText(t.value).then(() => {
+  const text = t.value;
+  const done = () => {
     const b = document.getElementById("copy-btn");
     if (b) { const old = b.textContent; b.textContent = "Copied"; setTimeout(() => b.textContent = old, 1200); }
-  });
+  };
+  if (navigator.share) {
+    navigator.share({ text: text }).then(done).catch(() => {
+      navigator.clipboard.writeText(text).then(done);
+    });
+    return;
+  }
+  navigator.clipboard.writeText(text).then(done);
 }
 document.addEventListener("DOMContentLoaded", () => {
   bootFromQuery();
@@ -396,10 +404,10 @@ def calc_block(salary=85000, hours=45, weeks=50, tax=25, commute=40, days=5, mee
       <div class="stat"><b id="out-meetings">—</b><span>Meetings, valued at your kept hour, per year</span></div>
       <div class="stat"><b id="out-annual-net">—</b><span>Take-home, same tax load</span></div>
       <div class="share-row">
-        <button type="button" id="copy-btn">Copy the number</button>
-        <a class="btn" id="sheet-link" href="{SITE}/sheet/">Get this week as a $39 sheet</a>
+        <button type="button" id="copy-btn">Share this number</button>
+        <a class="btn" id="sheet-link" href="{SITE}/sheet/">Ask a human to check this week — $39</a>
       </div>
-      <p class="note">The calculator stays free. The sheet is the same numbers, as a file, with the one block to cut. Stripe charges $39. No email required.</p>
+      <p class="note">The calculator stays free. The $39 sheet is a human check of the same numbers, not a locked file.</p>
       <p class="note">Share link updates as you type: <code id="perm"></code></p>
       <textarea id="share-text" hidden></textarea>
     </div>
@@ -784,14 +792,14 @@ def sheet() -> None:
     body = f"""
 <main class="hero">
   <p class="kicker">The paid page</p>
-  <h1>Your week, as a file. $39.</h1>
-  <p class="lede">The calculator is free and stays free. The sheet is the same arithmetic as one page you can hand a future self: kept hour, commute, meetings, evenings, and the one block to cut. No subscription. No email. Pay on Stripe. The file is the next page, with your numbers in the link.</p>
+  <h1>The file is free. The check is $39.</h1>
+  <p class="lede">The calculator is free. The file is free. $39 is a human reading the same numbers and replying to the email on the Stripe receipt. Pay only if you want that. If the checkout does not say $39.00, do not pay.</p>
 </main>
 <div class="grid grid-2">
   <div class="card">
     <h2>What you pay</h2>
-    <p><a class="btn" id="pay-link" href="{STRIPE}">Pay $39</a></p>
-    <p class="note">Stripe shows $39.00. That is the price. If the checkout does not say $39.00, do not pay. Stripe’s confirmation is the receipt. It does not redirect back here. Keep this tab. After you pay, open the file page already filled with these numbers.</p>
+    <p><a class="btn" id="pay-link" href="{STRIPE}">Pay $39 for a human check</a></p>
+    <p class="note">Stripe shows $39.00. That is the price. If the checkout does not say $39.00, do not pay. You are paying for the receipt and a human check, not for hidden arithmetic. The file is the next link, free, with these numbers. Email the receipt to kepthour.brief@gmail.com if you want that check. Refund: reply to the Stripe receipt within 7 days.</p>
     <p><a id="file-link" href="{SITE}/sheet/thanks/">Open the file page</a></p>
   </div>
   <div class="card">
@@ -808,12 +816,12 @@ document.addEventListener("DOMContentLoaded", () => {{
 }});
 </script>
 """
-    write("sheet/index.html", head("The Kept Hour sheet — $39, one file", "Your kept hour, commute, meetings, and the block to cut, as a file. $39 once. The calculator stays free.", "/sheet/") + body + FOOT)
+    write("sheet/index.html", head("Kept Hour — free file, $39 human check", "The file is free. $39 is a human check of the same numbers, paid on Stripe. The calculator stays free.", "/sheet/") + body + FOOT)
     thanks_body = f"""
 <main class="hero">
   <p class="kicker">Sheet</p>
   <h1>Download the file.</h1>
-  <p class="lede">Stripe’s confirmation is the receipt. This page is the sheet. It uses the numbers in the link. If you paid $39, download it. If you did not, go back and pay. The file is the same either way, which is why the price has to be low enough to be obvious.</p>
+  <p class="lede">This page is the sheet. It uses the numbers in the link. The $39 button on the previous page is the paid copy: same arithmetic, plus the Stripe receipt if you want a human to check it. You do not need to pay to read the file.</p>
   <p><button type="button" id="download-sheet" class="btn">Download kept-hour.txt</button></p>
   <pre class="paste" id="sheet-preview"></pre>
   <p class="note">Planning arithmetic, not tax advice. Refund: reply to the Stripe receipt within 7 days. A human rewrite is optional: kepthour.brief@gmail.com with the receipt.</p>
@@ -1031,7 +1039,7 @@ Monday form posts there via FormSubmit. The public feed is {SITE}/feed.xml for a
 
 ## Monetization lane (after traffic, not before)
 1. Free Monday brief (one number).
-2. $39 one-page sheet: their numbers, which hours to cut. Stripe link is on {SITE}/sheet/ and currently charges $39.00. The file downloads in the browser. The site cannot see the payment. Do not advertise a different price.
+2. $39 human check: same numbers as the free file, plus a reply if they email the Stripe receipt to kepthour.brief@gmail.com. The file is not locked. Stripe currently charges $39.00. Do not advertise a different price. The site cannot see the payment.
 3. Optional labeled affiliate later for tax software or a calendar tool. Not on day one. Trust is the asset.
 
 ## Still human

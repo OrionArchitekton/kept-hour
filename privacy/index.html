@@ -199,10 +199,18 @@ function bootFromQuery() {
 function copyShare() {
   const t = document.getElementById("share-text");
   if (!t) return;
-  navigator.clipboard.writeText(t.value).then(() => {
+  const text = t.value;
+  const done = () => {
     const b = document.getElementById("copy-btn");
     if (b) { const old = b.textContent; b.textContent = "Copied"; setTimeout(() => b.textContent = old, 1200); }
-  });
+  };
+  if (navigator.share) {
+    navigator.share({ text: text }).then(done).catch(() => {
+      navigator.clipboard.writeText(text).then(done);
+    });
+    return;
+  }
+  navigator.clipboard.writeText(text).then(done);
 }
 document.addEventListener("DOMContentLoaded", () => {
   bootFromQuery();

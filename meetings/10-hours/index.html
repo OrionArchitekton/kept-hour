@@ -161,10 +161,10 @@ th { font-family: "Avenir Next", "Segoe UI", sans-serif; font-size: 12px; letter
       <div class="stat"><b id="out-meetings">—</b><span>Meetings, valued at your kept hour, per year</span></div>
       <div class="stat"><b id="out-annual-net">—</b><span>Take-home, same tax load</span></div>
       <div class="share-row">
-        <button type="button" id="copy-btn">Copy the number</button>
-        <a class="btn" id="sheet-link" href="https://orionarchitekton.github.io/kept-hour/sheet/">Get this week as a $39 sheet</a>
+        <button type="button" id="copy-btn">Share this number</button>
+        <a class="btn" id="sheet-link" href="https://orionarchitekton.github.io/kept-hour/sheet/">Ask a human to check this week — $39</a>
       </div>
-      <p class="note">The calculator stays free. The sheet is the same numbers, as a file, with the one block to cut. Stripe charges $39. No email required.</p>
+      <p class="note">The calculator stays free. The $39 sheet is a human check of the same numbers, not a locked file.</p>
       <p class="note">Share link updates as you type: <code id="perm"></code></p>
       <textarea id="share-text" hidden></textarea>
     </div>
@@ -241,10 +241,18 @@ function bootFromQuery() {
 function copyShare() {
   const t = document.getElementById("share-text");
   if (!t) return;
-  navigator.clipboard.writeText(t.value).then(() => {
+  const text = t.value;
+  const done = () => {
     const b = document.getElementById("copy-btn");
     if (b) { const old = b.textContent; b.textContent = "Copied"; setTimeout(() => b.textContent = old, 1200); }
-  });
+  };
+  if (navigator.share) {
+    navigator.share({ text: text }).then(done).catch(() => {
+      navigator.clipboard.writeText(text).then(done);
+    });
+    return;
+  }
+  navigator.clipboard.writeText(text).then(done);
 }
 document.addEventListener("DOMContentLoaded", () => {
   bootFromQuery();

@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 SITE = "https://orionarchitekton.github.io/kept-hour"
-UPDATED = "2026-10-02"
+UPDATED = "2026-10-07"
 STRIPE = "https://buy.stripe.com/bJe7sMgq9d9h5qpfWW8Zq01"
 
 ROLES = [
@@ -349,6 +349,8 @@ def head(title: str, desc: str, path: str, extra: str = "") -> str:
     <a href="{SITE}/compare/">Offers</a>
     <a href="{SITE}/five-hours/">Five hours</a>
     <a href="{SITE}/commute/">Commute</a>
+    <a href="{SITE}/on-call/">On call</a>
+    <a href="{SITE}/shift/">Shift</a>
     <a href="{SITE}/newsletter/">Brief</a>
     <a href="{SITE}/sheet/">Sheet</a>
     <a href="{SITE}/paste/">Paste</a>
@@ -636,6 +638,60 @@ def city_page(slug, name, country, tax, rent) -> None:
         + body
         + FOOT,
     )
+
+
+def on_call() -> None:
+    weeks = [1, 4, 12, 26]
+    cards = []
+    for w in weeks:
+        nights = w * 7
+        cards.append(
+            f"<div class='card'><h3>{w} weeks on call</h3>"
+            f"<p>{nights} nights a year the phone can ring. "
+            f"If each night is worth one kept hour of sleep you do not get back, "
+            f"that is {nights} hours. At $40, {money(nights * 40)}. "
+            f"Your hour is probably not $40. Put the salary in.</p></div>"
+        )
+    body = f"""
+<main class="hero">
+  <p class="kicker">On call</p>
+  <h1>The rotation is unpaid work with a phone.</h1>
+  <p class="lede">A salary that ignores on call is a costume. One week in four is 13 weeks, 91 nights. Price the nights before you call the offer generous.</p>
+</main>
+<div class="grid grid-2">{''.join(cards)}</div>
+{calc_block(salary=120000, hours=45)}
+<section class="prose">
+  <h2>A fair rule</h2>
+  <p>If the rotation is one week in four, add 10 hours to the real week before you compare offers. That is not a law. It is the week the salary is hiding. Name the pager or do not take the title.</p>
+  <p>Compare two offers with the week included: <a href="{SITE}/compare/">the higher salary often loses</a>.</p>
+</section>
+"""
+    write("on-call/index.html", head("What on call costs in kept hours", "Price a pager rotation as nights and hours, not as a line on the offer letter.", "/on-call/") + body + FOOT)
+
+
+def shift() -> None:
+    rows = [
+        ("12-hour shifts, 3 days", 36, "Three 12s look short. They are not 40. They are also not free at the edges: handoff, commute, and the day after."),
+        ("12-hour shifts, 4 days", 48, "Four 12s is a 48-hour week before commute. Divide the salary by 48 times the weeks you actually work."),
+        ("Night shift differential", 40, "A night differential that does not clear the sleep is not a raise. Put the real hours in, including the hours you cannot sleep."),
+    ]
+    cards = []
+    for title, hours, note in rows:
+        cards.append(f"<div class='card'><h3>{title}</h3><p>{note} Start from {hours} hours in the calculator.</p></div>")
+    body = f"""
+<main class="hero">
+  <p class="kicker">Shift</p>
+  <h1>A 12-hour shift is not a 40-hour salary.</h1>
+  <p class="lede">Three 12s is 36 hours. Four 12s is 48. The offer letter still divides by 2,080. That is how a night shift hides the week.</p>
+</main>
+<div class="grid grid-3">{''.join(cards)}</div>
+{calc_block(salary=78000, hours=48, weeks=48)}
+<section class="prose">
+  <p>Nurses, warehouse leads, and plant jobs lose this comparison when they accept the annual number. Put the real shift in. Then compare it with a 40-hour offer before you reply.</p>
+  <p><a href="{SITE}/jobs/registered-nurse/">A typical nurse week</a> is already on the site. Change the hours if your rotation is worse.</p>
+</section>
+"""
+    write("shift/index.html", head("12-hour shifts vs a 40-hour salary", "Three 12s and four 12s, priced as a real week instead of salary divided by 2,080.", "/shift/") + body + FOOT)
 
 
 def meetings_index() -> None:
@@ -1208,7 +1264,7 @@ def feed() -> None:
 
 
 def main() -> None:
-    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/five-hours/", "/commute/", "/sheet/", "/sheet/thanks/", "/paste/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
+    urls = ["/", "/salary/", "/jobs/", "/cities/", "/meetings/", "/compare/", "/five-hours/", "/commute/", "/on-call/", "/shift/", "/sheet/", "/sheet/thanks/", "/paste/", "/newsletter/", "/newsletter/thanks/", "/about/", "/privacy/"]
     home()
     salary_index()
     for s in SALARIES:
@@ -1228,6 +1284,8 @@ def main() -> None:
     compare()
     raise_page()
     commute_page()
+    on_call()
+    shift()
     sheet()
     meetings_index()
     for m in MEETINGS:
